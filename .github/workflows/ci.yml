@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run example test
+        run: |
+          cd examples/app-icons
+          npm install
+          npm run build
+
+      - name: Verify output
+        run: |
+          ls examples/app-icons/dist/app-icons.json
+          ls examples/app-icons/dist/app-icons.css
+          ls examples/app-icons/dist/app-icons.html
