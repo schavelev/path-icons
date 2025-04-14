@@ -21,6 +21,7 @@ pids
 node_modules/
 
 #
+.vs/
 dist/
 obj/
 pnpm-lock.yaml
