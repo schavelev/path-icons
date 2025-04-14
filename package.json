@@ -1,0 +1,49 @@
+{
+  "name": "path-icons",
+  "version": "0.0.1",
+  "description": "A utility for generating CSS with SVG path-based icons",
+  "bin": {
+    "path-icons": "bin/path-icons.mjs"
+  },
+  "scripts": {
+    "update-bi": "node build/update-bi-json.mjs",
+    "build": "node build/pi-processor.mjs",
+    "start": "node bin/path-icons.mjs",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "icons",
+    "svg",
+    "css",
+    "path",
+    "bootstrap-icons"
+  ],
+  "author": "Eduard Shchavelev (http://visar.ru)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schavelev/path-icons.git"
+  },
+  "homepage": "https://github.com/schavelev/path-icons#readme",
+  "bugs": {
+    "url": "https://github.com/schavelev/path-icons/issues"
+  },
+  "files": [
+    "bin/",
+    "build/",
+    "dist/",
+    "src/",
+    "examples/"
+  ],
+  "dependencies": {
+    "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "bootstrap-icons": "^1.11.3",
+    "fast-xml-parser": "^5.2.0",
+    "p-limit": "^6.2.0"
+  },
+  "engines": {
+    "node": ">=14.13.1"
+  }
+}

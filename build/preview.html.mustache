@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Icons Preview</title>
+    <link rel="stylesheet" href="{{cssPath}}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .icon-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px;
+            background-color: white;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .icon-name {
+            font-size: 10px;
+            margin-top: 4px;
+            word-break: break-all;
+        }
+
+        .icon-item span[class^="pi-"] {
+            --pi-size: 32px;
+            --pi-scale: 2.0;
+        }
+
+        .icon-toolbar {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Path Icons Preview</h1>
+    <div class="icon-container">
+        {{#icons}}
+        <div class="icon-item">
+            <span class="pi-{{.}}"></span>
+            <span class="icon-name">{{.}}</span>
+        </div>
+        {{/icons}}
+    </div>
+    <div class="icon-toolbar">
+        {{#icons}}
+        <i class="pi-{{.}}"></i>
+        {{/icons}}
+    </div>
+</body>
+</html>

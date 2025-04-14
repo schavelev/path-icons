@@ -1,0 +1,33 @@
+.pi,
+[class^="pi-"],
+[class*=" pi-"] {
+  --pi-base-size: 16px;
+  --pi-size: var(--pi-base-size);
+  --pi-scale: 1;
+  display: inline-block;
+  width: var(--pi-size);
+  height: var(--pi-size);
+  vertical-align: middle;
+  position: relative;
+  line-height: var(--pi-size);
+  flex-shrink: 0;
+}
+
+.pi::before,
+.pi::after,
+[class^="pi-"]::before,
+[class^="pi-"]::after,
+[class*=" pi-"]::before,
+[class*=" pi-"]::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: var(--pi-base-size);
+  height: var(--pi-base-size);
+  background-color: currentColor;
+  transform: scale(var(--pi-scale, 1));
+  transform-origin: 0 0;
+}
+
+{{{iconRules}}}
