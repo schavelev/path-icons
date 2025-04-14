@@ -31,7 +31,6 @@
   "files": [
     "bin/",
     "build/",
-    "src/",
     "dist/path-icons.json"
   ],
   "publishConfig": {
