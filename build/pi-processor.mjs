@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url';
 import Mustache from 'mustache';
 
 const args = process.argv.slice(2);
-const VERBOSE = args.includes('--verbose');
 
 // Define file paths and constants
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -33,9 +32,6 @@ async function prepareJson(baseJsonPath, overrideJsonPath, addNew) {
         let overrideData = {};
         try {
             overrideData = JSON.parse(await fs.readFile(overrideJsonPath, 'utf8'));
-            if (VERBOSE) {
-                console.log(`Merging with overrides from ${overrideJsonPath}`);
-            }
         } catch (error) {
             console.error(`Error loading ${overrideJsonPath}, using base JSON only.`);
             console.error(error);
@@ -75,9 +71,6 @@ async function prepareJson(baseJsonPath, overrideJsonPath, addNew) {
  * @returns {Promise<void>}
  */
 async function createCSS(mergedData, outputCssPath) {
-    console.log('Starting CSS generation...');
-    console.time('CSS Generation completed');
-
     try {
         // Compile CSS template
         const baseCSSTemplate = await fs.readFile(CSS_TEMPLATE_FILE, 'utf8');
@@ -85,9 +78,6 @@ async function createCSS(mergedData, outputCssPath) {
         const iconRules = iconNames
             .map(iconName => {
                 const iconData = mergedData[iconName];
-                if (VERBOSE) {
-                    console.log(`- ${iconName}`);
-                }
                 if (iconData === null) {
                     return '';
                 }
@@ -116,16 +106,6 @@ async function createCSS(mergedData, outputCssPath) {
         // Write CSS output
         await fs.mkdir(dirname(outputCssPath), { recursive: true });
         await fs.writeFile(outputCssPath, finalCSS, 'utf8');
-
-        // Log statistics
-        const totalIcons = iconNames.length;
-        const validIcons = iconNames.filter(name => mergedData[name] !== null).length;
-        const ignoredIcons = totalIcons - validIcons;
-
-        console.log(`\nSuccess! Generated CSS for ${totalIcons} icon${totalIcons === 1 ? '' : 's'} at ${outputCssPath}:`);
-        console.log(`- ${validIcons} icon${validIcons === 1 ? '' : 's'} with paths`);
-        console.log(`- ${ignoredIcons} ignored icon${ignoredIcons === 1 ? '' : 's'} (no paths)`);
-        console.timeEnd('CSS Generation completed');
     } catch (error) {
         console.error('Error generating CSS:', error);
         throw error;
@@ -140,15 +120,9 @@ async function createCSS(mergedData, outputCssPath) {
  * @returns {Promise<void>}
  */
 async function createHtml(mergedData, outputHtmlPath, cssPath) {
-    console.log('Starting HTML generation...');
-    console.time('HTML Generation completed');
-
     try {
         // Extract icon names
         const iconNames = Object.keys(mergedData).filter(name => mergedData[name] !== null);
-        if (VERBOSE) {
-            iconNames.forEach(name => console.log(`- ${name}`));
-        }
 
         // Load HTML template
         const htmlTemplate = await fs.readFile(HTML_TEMPLATE_FILE, 'utf8');
@@ -162,11 +136,6 @@ async function createHtml(mergedData, outputHtmlPath, cssPath) {
         // Write HTML output
         await fs.mkdir(dirname(outputHtmlPath), { recursive: true });
         await fs.writeFile(outputHtmlPath, htmlContent, 'utf8');
-
-        // Log statistics
-        const totalIcons = iconNames.length;
-        console.log(`\nSuccess! Generated HTML for ${totalIcons} icon${totalIcons === 1 ? '' : 's'} at ${outputHtmlPath}`);
-        console.timeEnd('HTML Generation completed');
     } catch (error) {
         console.error('Error generating HTML:', error);
         throw error;

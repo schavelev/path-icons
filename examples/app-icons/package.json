@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "description": "Example project using path-icons",
   "scripts": {
-    "build": "npx path-icons --input app-icons-in.json --json dist/app-icons.json --css --html"
+    "build": "npx path-icons --config path-icons.config.json"
   },
-  "keywords": [ "icons", "avalonia", "wpf", "path-icons" ],
+  "keywords": [
+    "icons",
+    "avalonia",
+    "wpf",
+    "path-icons"
+  ],
   "author": "Eduard Shchavelev",
   "license": "MIT",
   "devDependencies": {
-    "path-icons": "^0.0.1"
+    "path-icons": "link:..\\.."
   }
 }

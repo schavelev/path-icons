@@ -4,7 +4,7 @@ import { join, basename, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import pLimit from 'p-limit';
 
-// Эквивалент __dirname в ESM
+// Equivalent of __dirname in ESM
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const ICONS_DIR = join(__dirname, '../node_modules/bootstrap-icons/icons');
@@ -91,14 +91,14 @@ async function buildIcons() {
     console.log('Starting Bootstrap Icons JSON build...');
     console.time('Build completed');
 
-    // Создаем парсер один раз
+    // Create the parser once
     const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '',
         attributesGroupName: '$',
     });
 
-    // Ограничиваем параллелизм
+    // Limit parallelism
     const limit = pLimit(50);
 
     try {

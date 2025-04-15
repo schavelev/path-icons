@@ -1,6 +1,6 @@
 {
   "name": "path-icons",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A utility for generating JSON and CSS with SVG path-based icons",
   "bin": {
     "path-icons": "bin/path-icons.mjs"
@@ -8,7 +8,7 @@
   "scripts": {
     "update-bi": "node build/update-bi-json.mjs",
     "build": "node build/pi-processor.mjs",
-    "start": "node bin/path-icons.mjs --input example.json --json out.json",
+    "start": "node bin/path-icons.mjs",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
