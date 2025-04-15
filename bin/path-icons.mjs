@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs';
 import { resolve, dirname, relative, basename, extname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { prepareJson, createCSS, createHtml } from '../build/pi-processor.mjs';
+import { prepareJson, createCSS, createHtml, createCSharp } from '../build/pi-processor.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PI_JSON_FILE_PATH = resolve(__dirname, '../dist/path-icons.json');
@@ -161,13 +161,12 @@ function buildOptions({ config, inputArg, verboseArg }) {
             }
         }
 
-        // Generate C# if requested (placeholder)
+        // Generate C# if requested
         if (opts.csharpPath) {
             await fs.mkdir(dirname(opts.csharpPath), { recursive: true });
-            // Placeholder: await createCsharp(mergedData, opts.csharpPath);
-            await fs.writeFile(opts.csharpPath, '// Placeholder C# content', 'utf8');
+            await createCSharp(mergedData, opts.csharpPath, opts);
             if (opts.verbose) {
-                console.log(`Generated C# at ${opts.csharpPath}`);
+                console.log(`Success! Generated C# at ${opts.csharpPath}`);
             }
         }
 

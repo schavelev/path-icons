@@ -142,7 +142,92 @@ async function createHtml(mergedData, outputHtmlPath, cssPath) {
     }
 }
 
-export { prepareJson, createCSS, createHtml };
+/**
+ * Generates C# enum from merged icon data and writes it to output path.
+ * @param {object} mergedData - Merged icon data.
+ * @param {string} outputCsharpPath - Path for output C# file.
+ * @param {object} options - Configuration options.
+ * @param {string} [options.namespace="SharedLib.Bootstrap"] - Namespace for the enum.
+ * @param {string} [options.enumName="BootstrapSymbol"] - Name of the enum.
+ * @param {string} [options.attrName="SymbolPath"] - Name of the attribute for symbol paths.
+ * @returns {Promise<void>}
+ */
+async function createCSharp(mergedData, outputCsharpPath, options = {}) {
+    try {
+        // Default options
+        const {
+            namespace = 'SharedLib.Bootstrap',
+            enumName = 'BootstrapSymbol',
+            attrName = 'SymbolPath'
+        } = options;
+
+        // Load C# template
+        const csharpTemplate = await fs.readFile(join(__dirname, 'csharp.mustache'), 'utf8');
+
+        // Process icon data
+        const iconDefinitions = Object.keys(mergedData)
+            .filter(iconName => mergedData[iconName] !== null)
+            .map(iconName => {
+                const iconData = mergedData[iconName];
+                const pascalCaseName = iconName
+                    .split('-')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                    .join('');
+
+                // Prepare attributes for SymbolPath
+                const attributes = [];
+
+                // Handle pathBefore
+                if (iconData.pathBefore) {
+                    let colorValue = '0';
+                    if (iconData.colorBefore) {
+                        if (iconData.colorBefore.startsWith('#')) {
+                            // Convert HEX to ARGB (add 0xff for full opacity)
+                            colorValue = `0xff${iconData.colorBefore.slice(1).toLowerCase()}`;
+                        } else {
+                            // Use KnownColor for named colors
+                            colorValue = `KnownColor.${iconData.colorBefore}`;
+                        }
+                    }
+                    attributes.push(`[${attrName}("${iconData.pathBefore}", ${colorValue})]`);
+                }
+
+                // Handle pathAfter
+                if (iconData.pathAfter) {
+                    let colorValue = '0';
+                    if (iconData.colorAfter) {
+                        if (iconData.colorAfter.startsWith('#')) {
+                            colorValue = `0xff${iconData.colorAfter.slice(1).toLowerCase()}`;
+                        } else {
+                            colorValue = `KnownColor.${iconData.colorAfter}`;
+                        }
+                    }
+                    attributes.push(`[${attrName}("${iconData.pathAfter}", ${colorValue})]`);
+                }
+
+                return {
+                    comment: iconData.header ? `${iconData.header}, ${iconName}` : iconName,
+                    name: pascalCaseName,
+                    attributes: attributes.join('\n    ')
+                };
+            });
+
+        // Render C# template
+        const csharpContent = Mustache.render(csharpTemplate, {
+            namespace,
+            enumName,
+            icons: iconDefinitions
+        });
+
+        // Write C# output
+        await fs.mkdir(dirname(outputCsharpPath), { recursive: true });
+        await fs.writeFile(outputCsharpPath, csharpContent, 'utf8');
+    } catch (error) {
+        console.error('Error generating C#:', error);
+        throw error;
+    }
+}
+export { prepareJson, createCSS, createHtml, createCSharp };
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const JSON_INDEX = args.indexOf('--json');
