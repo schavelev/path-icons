@@ -9,6 +9,7 @@
 
 Path Icons is a lightweight, customizable icon solution inspired by Bootstrap Icons. It allows you to use only the icons you need, add two-tone color support, and easily integrate custom icons. Designed for web applications (via Node.js and npm module path-icons) and cross-platform desktop apps built with Avalonia and WPF.
 
+🛠️ *This project is under construction. More details coming soon!*
 
 ## Why Path Icons?
 
@@ -16,9 +17,6 @@ Path Icons is a lightweight, customizable icon solution inspired by Bootstrap Ic
 - **Two-Tone Colors**: Enhance Bootstrap Icons with dual-color support for better visual appeal.
 - **Custom Icons**: Simplify the process of adding and managing your own icons.
 - **Cross-Platform**: Seamlessly use the same icons in web and desktop applications (Avalonia, WPF).
-
-**This project is under construction. More details coming soon!**
-
 
 ## Installation
 
