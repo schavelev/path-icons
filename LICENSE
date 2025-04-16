@@ -1,4 +1,4 @@
-MIT License
+The MIT License
 
 Copyright (c) 2024-2025 Eduard Shchavelev
 
@@ -23,7 +23,9 @@ SOFTWARE.
 ---
 
 This project includes SVG icon data from Bootstrap Icons (https://github.com/twbs/icons),
-which is licensed under the MIT License:
+which is licensed under:
+
+The MIT License (MIT)
 
 Copyright (c) 2019-2024 The Bootstrap Authors
 
