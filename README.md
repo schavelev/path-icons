@@ -42,7 +42,7 @@ npm install path-icons
 
 3. **Run the generator**:  
    ```bash
-   npx path-icons
+   npx path-icons --verbose
    ```
 
 4. **View results**:  
