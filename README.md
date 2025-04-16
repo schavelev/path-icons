@@ -26,15 +26,27 @@ Path Icons is a lightweight, customizable icon solution inspired by Bootstrap Ic
 npm install path-icons
 ```
 
-## Example
+## Quick Start  
 
-See the [examples/app-icons](examples/app-icons/) directory for a sample project:
+1. **Set up a test project and install `path-icons`**:  
+   ```bash
+   mkdir try-path-icons
+   cd try-path-icons
+   npm init -y
+   npm add path-icons -D
+   ```
 
-```bash
-cd examples/app-icons
-npm install
-npm run build
-```
+2. **Add configuration files** (copy from [examples/app-icons](examples/app-icons/)):
+   - [`path-icons.config.json`](examples/app-icons/path-icons.config.json) - generator settings  
+   - [`app-icons.json`](examples/app-icons/app-icons.json) - icon definitions  
+
+3. **Run the generator**:  
+   ```bash
+   npx path-icons
+   ```
+
+4. **View results**:  
+   Generated files are available in the `dist` directory. Open `dist/app-icons.html` to preview icons.
 
 ## License
 
