@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 import { promises as fs } from 'fs';
-import { resolve, dirname, relative, basename, extname, join } from 'path';
+import { resolve, dirname, relative, basename, extname, join, normalize } from 'path';
 import { fileURLToPath } from 'url';
 import { prepareJson, createCSS, createHtml, createCSharp } from '../build/pi-processor.mjs';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { version } = require('../package.json');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PI_JSON_FILE_PATH = resolve(__dirname, '../dist/path-icons.json');
 const DEFAULT_CONFIG_FILE = 'path-icons.config.json';
+const DEFAULT_CSHARP_FILE = 'BootstrapSymbol.cs';
+const DEFAULT_OUT_DIR = 'dist';
 
 // Function to load and parse config file
 async function loadConfig(configPath) {
@@ -23,19 +29,23 @@ async function loadConfig(configPath) {
 
 // Function to build options from parsed args and config
 function buildOptions({ config, inputArg, verboseArg }) {
-    // Merge config with CLI arguments
-    const opts = {
-        input: inputArg || config.input,
-        outDir: config.outDir || 'dist',
-        verbose: verboseArg || config.verbose || false,
-        json: config.json === true ? true : config.json || false,
-        css: config.css === true ? true : config.css || false,
-        html: config.html === true ? true : config.html || false,
-        csharp: config.csharp === true ? true : config.csharp || false,
-    };
+    function prepareFileName(configValue, subDir, defaultName) {
+        var fileName = typeof configValue === 'string'
+            ? configValue
+            : configValue === true
+                ? defaultName
+                : null;
+
+        if (fileName) {
+            fileName = normalize(fileName);
+            return dirname(fileName) !== '.' ? fileName : join(subDir, fileName);
+        }
+        return fileName;
+    }
 
     // Validate required input
-    if (!opts.input) {
+    const inputFile = inputArg || config.input;
+    if (!inputFile) {
         throw new Error(
             'Input file is required. Specify it via --input or in path-icons.config.json'
         );
@@ -43,41 +53,24 @@ function buildOptions({ config, inputArg, verboseArg }) {
 
     // Validate output file types
     for (const key of ['json', 'css', 'html', 'csharp']) {
-        if (opts[key] !== true && opts[key] !== false && typeof opts[key] !== 'string') {
+        if (config[key] && config[key] !== true && config[key] !== false && typeof config[key] !== 'string') {
             throw new Error(`Config error: "${key}" must be a boolean or string`);
         }
     }
 
-    // Resolve input path and base name
-    opts.input = resolve(opts.input);
-    const inputBaseName = basename(opts.input, extname(opts.input));
-    opts.outDir = resolve(opts.outDir);
+    const inputBaseName = basename(inputFile, extname(inputFile));
+    const outDir = config.outDir || DEFAULT_OUT_DIR;
 
-    // Set output paths
-    opts.jsonPath =
-        opts.json === true
-            ? join(opts.outDir, `${inputBaseName}.json`)
-            : opts.json
-                ? resolve(opts.json)
-                : null;
-    opts.cssPath =
-        opts.css === true
-            ? join(opts.outDir, `${inputBaseName}.css`)
-            : opts.css
-                ? resolve(opts.css)
-                : null;
-    opts.htmlPath =
-        opts.html === true
-            ? join(opts.outDir, `${inputBaseName}.html`)
-            : opts.html
-                ? resolve(opts.html)
-                : null;
-    opts.csharpPath =
-        opts.csharp === true
-            ? join(opts.outDir, `${inputBaseName}.cs`)
-            : opts.csharp
-                ? resolve(opts.csharp)
-                : null;
+    // Merge config with CLI arguments
+    const opts = {
+        input: inputFile,
+        outDir: outDir,
+        verbose: verboseArg || config.verbose || false,
+        json: prepareFileName(config.json, outDir, `${inputBaseName}.json`),
+        css: prepareFileName(config.css, outDir, `${inputBaseName}.css`),
+        html: prepareFileName(config.html, outDir, `${inputBaseName}.html`),
+        csharp: prepareFileName(config.csharp, outDir, DEFAULT_CSHARP_FILE),
+    };
 
     return opts;
 }
@@ -85,8 +78,15 @@ function buildOptions({ config, inputArg, verboseArg }) {
 // Main logic
 (async () => {
     try {
-        // Parse arguments
         const args = process.argv.slice(2);
+
+        // Show version and exit
+        if (args.includes('--version') || args.includes('-v')) {
+            console.log(`path-icons v${version}`);
+            process.exit(0);
+        }
+
+        // Parse arguments
         const CONFIG_INDEX = args.indexOf('--config');
         const INPUT_INDEX = args.indexOf('--input');
         const inputArg = INPUT_INDEX !== -1 && INPUT_INDEX + 1 < args.length ? args[INPUT_INDEX + 1] : null;
@@ -107,7 +107,7 @@ function buildOptions({ config, inputArg, verboseArg }) {
 
         // Build options
         const opts = buildOptions({ config, inputArg, verboseArg });
-
+        console.log(opts)
         console.log('Starting processing...');
         console.time('Processing completed');
 
@@ -115,7 +115,7 @@ function buildOptions({ config, inputArg, verboseArg }) {
         if (opts.verbose) {
             console.log('\nStarting JSON merge...');
         }
-        const mergedData = await prepareJson(opts.input, PI_JSON_FILE_PATH, false);
+        const mergedData = await prepareJson(resolve(opts.input), PI_JSON_FILE_PATH, false);
 
         // Log merged icons
         if (opts.verbose) {
@@ -127,46 +127,47 @@ function buildOptions({ config, inputArg, verboseArg }) {
         }
 
         // Write merged JSON data
-        if (opts.jsonPath) {
-            await fs.mkdir(dirname(opts.jsonPath), { recursive: true });
-            await fs.writeFile(opts.jsonPath, JSON.stringify(mergedData, null, 2), 'utf8');
+        if (opts.json) {
+            const jsonFilePath = resolve(opts.json);
+            await fs.mkdir(dirname(jsonFilePath), { recursive: true });
+            await fs.writeFile(jsonFilePath, JSON.stringify(mergedData, null, 2), 'utf8');
             if (opts.verbose) {
-                console.log(`Generated JSON saved at ${opts.jsonPath}`);
+                console.log(`Generated JSON saved at ${jsonFilePath}`);
             }
         }
 
         // Generate CSS if requested
-        if (opts.cssPath) {
+        if (opts.css) {
+            const cssFilePath = resolve(opts.css);
+            await fs.mkdir(dirname(cssFilePath), { recursive: true });
+            await createCSS(mergedData, cssFilePath);
             if (opts.verbose) {
-                console.log('\nStarting CSS generation...');
-            }
-            await createCSS(mergedData, opts.cssPath);
-            if (opts.verbose) {
-                console.log(`Success! Generated CSS at ${opts.cssPath}`);
+                console.log(`Generated CSS at ${cssFilePath}`);
             }
         }
 
         // Generate HTML if requested
-        if (opts.htmlPath) {
-            if (opts.verbose) {
-                console.log('\nStarting HTML generation...');
-            }
-            if (!opts.cssPath) {
+        if (opts.html) {
+            const cssFilePath = resolve(opts.css);
+            const htmlFilePath = resolve(opts.html);
+            if (!cssFilePath) {
                 throw new Error('HTML generation requires CSS to be specified');
             }
-            const cssPath = relative(dirname(opts.htmlPath), opts.cssPath);
-            await createHtml(mergedData, opts.htmlPath, cssPath);
+            const cssRelativePath = relative(dirname(htmlFilePath), cssFilePath);
+            await fs.mkdir(dirname(htmlFilePath), { recursive: true });
+            await createHtml(mergedData, htmlFilePath, cssRelativePath);
             if (opts.verbose) {
-                console.log(`Success! Generated HTML at ${opts.htmlPath}`);
+                console.log(`Generated HTML at ${htmlFilePath}`);
             }
         }
 
         // Generate C# if requested
-        if (opts.csharpPath) {
-            await fs.mkdir(dirname(opts.csharpPath), { recursive: true });
-            await createCSharp(mergedData, opts.csharpPath, opts);
+        if (opts.csharp) {
+            const csharpPath = resolve(opts.csharp);
+            await fs.mkdir(dirname(csharpPath), { recursive: true });
+            await createCSharp(mergedData, csharpPath, opts);
             if (opts.verbose) {
-                console.log(`Success! Generated C# at ${opts.csharpPath}`);
+                console.log(`Generated C# at ${csharpPath}`);
             }
         }
 

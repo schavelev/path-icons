@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { promises as fs } from 'fs';
-import { join, resolve, dirname, relative } from 'path';
+import { join, resolve, dirname, relative, basename, extname } from 'path';
 import { fileURLToPath } from 'url';
 import Mustache from 'mustache';
 
@@ -153,13 +153,14 @@ async function createHtml(mergedData, outputHtmlPath, cssPath) {
  * @returns {Promise<void>}
  */
 async function createCSharp(mergedData, outputCsharpPath, options = {}) {
+    const csharpOptions = options.csharpOptions || {};
+    const enumName = basename(outputCsharpPath, extname(outputCsharpPath));
     try {
         // Default options
         const {
             namespace = 'SharedLib.Bootstrap',
-            enumName = 'BootstrapSymbol',
             attrName = 'SymbolPath'
-        } = options;
+        } = csharpOptions;
 
         // Load C# template
         const csharpTemplate = await fs.readFile(join(__dirname, 'csharp.mustache'), 'utf8');

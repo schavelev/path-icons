@@ -1,9 +1,9 @@
 {
+  "verbose": false,
   "input": "app-icons.json",
   "outDir": "dist",
   "json": true,
   "css": true,
   "html": true,
-  "csharp": false,
-  "verbose": false
+  "csharp": false
 }
