@@ -107,7 +107,6 @@ function buildOptions({ config, inputArg, verboseArg }) {
 
         // Build options
         const opts = buildOptions({ config, inputArg, verboseArg });
-        console.log(opts)
         console.log('Starting processing...');
         console.time('Processing completed');
 
