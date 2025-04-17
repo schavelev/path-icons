@@ -126,7 +126,7 @@ async function createHtml(mergedData, outputHtmlPath, cssPath) {
             .filter(([name, data]) => data !== null)
             .map(([name, data]) => ({
                 name,
-                header: data.header
+                header: data.header || name
             }));
 
         // Load HTML template
