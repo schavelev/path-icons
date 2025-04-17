@@ -121,8 +121,13 @@ async function createCSS(mergedData, outputCssPath) {
  */
 async function createHtml(mergedData, outputHtmlPath, cssPath) {
     try {
-        // Extract icon names
-        const iconNames = Object.keys(mergedData).filter(name => mergedData[name] !== null);
+        // Extract icon data with names and headers
+        const iconsData = Object.entries(mergedData)
+            .filter(([name, data]) => data !== null)
+            .map(([name, data]) => ({
+                name,
+                header: data.header
+            }));
 
         // Load HTML template
         const htmlTemplate = await fs.readFile(HTML_TEMPLATE_FILE, 'utf8');
@@ -130,7 +135,7 @@ async function createHtml(mergedData, outputHtmlPath, cssPath) {
         // Render template
         const htmlContent = Mustache.render(htmlTemplate, {
             cssPath,
-            icons: iconNames
+            icons: iconsData
         });
 
         // Write HTML output
