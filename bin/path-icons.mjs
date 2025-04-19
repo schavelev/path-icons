@@ -15,12 +15,21 @@ const DEFAULT_CSHARP_FILE = 'BootstrapSymbol.cs';
 const DEFAULT_OUT_DIR = 'dist';
 
 // Function to load and parse config file
-async function loadConfig(configPath) {
+async function loadConfig(configPath, inputArg) {
     try {
         const data = await fs.readFile(configPath, 'utf8');
         return JSON.parse(data);
     } catch (error) {
         if (error.code === 'ENOENT') {
+            // If file not found and inputArg is provided, return default config
+            if (inputArg) {
+                return {
+                    outDir: 'dist',
+                    json: true,
+                    css: true,
+                    html: true
+                };
+            }
             return {}; // File not found, return empty config
         }
         throw new Error(`Failed to load config file ${configPath}: ${error.message}`);
@@ -99,10 +108,10 @@ function buildOptions({ config, inputArg, verboseArg }) {
         if (configArg) {
             // Load user-specified config file
             const configPath = resolve(configArg);
-            config = await loadConfig(configPath);
+            config = await loadConfig(configPath, inputArg);
         } else {
             // Try to load default config file
-            config = await loadConfig(resolve(DEFAULT_CONFIG_FILE));
+            config = await loadConfig(resolve(DEFAULT_CONFIG_FILE), inputArg);
         }
 
         // Build options
