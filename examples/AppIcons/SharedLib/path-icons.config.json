@@ -1,0 +1,9 @@
+{
+  "verbose": false,
+  "input": "shared-lib-icons.json",
+  "outDir": "dist",
+  "json": true,
+  "css": true,
+  "html": true,
+  "csharp": "Bootstrap/BootstrapSymbol.cs"
+}

@@ -1,0 +1,38 @@
+{
+  "bootstrap": null,
+  "path-icons": null,
+  "window-sidebar": {
+    "header": "Sidebar",
+    "colorBefore": "#ffc107",
+    "colorAfter": "#ffc107"
+  },
+  "funnel": {
+    "header": "Filter",
+    "colorBefore": "RoyalBlue"
+  },
+  "sort-alpha-down": {
+    "header": "Sort",
+    "colorBefore": "RoyalBlue",
+    "colorAfter": "RoyalBlue"
+  },
+  "file-earmark-arrow-down": {
+    "header": "Export",
+    "colorBefore": "#0d6efd",
+    "colorAfter": "Green"
+  },
+  "file-earmark-arrow-up": {
+    "header": "Import",
+    "colorBefore": "Gold",
+    "colorAfter": "Green"
+  },
+  "file-earmark-spreadsheet": {
+    "header": "Edit",
+    "colorBefore": "Green",
+    "colorAfter": "Green"
+  },
+  "graph-up-arrow": {
+    "header": "Report",
+    "colorBefore": "#0d6efd",
+    "colorAfter": "#0d6efd"
+  }
+}

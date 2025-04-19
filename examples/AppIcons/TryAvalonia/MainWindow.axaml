@@ -1,0 +1,123 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:bs="using:SharedLib.Bootstrap"
+		xmlns:me="using:TryAvalonia.MarkupExtensions"
+		xmlns:ui="using:TryAvalonia"
+        Width="600" Height="300"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="300"
+        x:Class="TryAvalonia.MainWindow"
+        Title="TryAvalonia">
+	<Window.Resources>
+		<x:Double x:Key="BootstrapIconSize">32</x:Double>
+	</Window.Resources>
+	<Window.Styles>
+		<Style Selector="Button">
+			<Setter Property="Background" Value="#EEF5FD"/>
+			<Setter Property="MinWidth" Value="70"/>
+			<Setter Property="MinHeight" Value="50"/>
+		</Style>
+		<Style Selector="Button > StackPanel > PathIcon">
+			<Setter Property="Width" Value="32"/>
+			<Setter Property="Height" Value="32"/>
+		</Style>
+		<Style Selector="Button > StackPanel > TextBlock">
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+		</Style>
+	</Window.Styles>
+	<DockPanel>
+		<!-- PathIcon without colors -->
+		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+			<Button>
+				<StackPanel>
+					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.WindowSidebar}}" />
+					<TextBlock Text="Sidebar"/>
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.Funnel}}" />
+					<TextBlock Text="Filter" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.SortAlphaDown}}" />
+					<TextBlock Text="Sort" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.FileEarmarkArrowDown}}" />
+					<TextBlock Text="Export" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.FileEarmarkArrowUp}}" />
+					<TextBlock Text="Import" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.FileEarmarkSpreadsheet}}" />
+					<TextBlock Text="Excel" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.GraphUpArrow}}" />
+					<TextBlock Text="Report" />
+				</StackPanel>
+			</Button>
+		</StackPanel>
+		<!-- BootstrapIcon -->		
+		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="WindowSidebar" />
+					<TextBlock Text="Sidebar"/>
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="Funnel" />
+					<TextBlock Text="Filter" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="SortAlphaDown" />
+					<TextBlock Text="Sort" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="FileEarmarkArrowDown" />
+					<TextBlock Text="Export" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="FileEarmarkArrowUp" />
+					<TextBlock Text="Import" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="FileEarmarkSpreadsheet" />
+					<TextBlock Text="Excel" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="GraphUpArrow" />
+					<TextBlock Text="Report" />
+				</StackPanel>
+			</Button>
+		</StackPanel>
+		<!---->
+		<TextBlock Text="Welcome to Avalonia!" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+	</DockPanel>
+</Window>
