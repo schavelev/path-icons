@@ -1,6 +1,6 @@
 {
   "name": "path-icons",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A utility for generating JSON and CSS with SVG path-based icons",
   "bin": {
     "path-icons": "bin/path-icons.mjs"
@@ -15,8 +15,9 @@
     "icons",
     "svg",
     "css",
-    "path",
-    "bootstrap-icons"
+    "bootstrap-icons",
+    "avalonia",
+    "wpf"
   ],
   "author": "Eduard Shchavelev (http://visar.ru)",
   "license": "MIT",
