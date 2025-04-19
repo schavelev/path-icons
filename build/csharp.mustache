@@ -2,8 +2,12 @@ using System.Drawing;
 
 namespace {{namespace}};
 
+// Defines an enum for Bootstrap icons, each associated with SVG path data and colors via SymbolPathAttribute.
 public enum {{enumName}}
 {
+    // none
+    [SymbolPath("")]
+    None,
 {{#icons}}
     // {{comment}}
     {{{attributes}}}
