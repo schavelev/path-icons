@@ -16,11 +16,11 @@ It creates CSS files for web applications and C# files for Avalonia and WPF appl
 
 ## Why Path Icons?
 
-- **Ready-to-use icons**: No need to design—leverage the extensive [Bootstrap Icons](https://icons.getbootstrap.com/) collection.
-- **Cross-platform compatibility**: Use a consistent icon style across web applications and Avalonia/WPF applications.
-- **Selective usage**: Include only the icons you need, instead of the full set of 2000+ Bootstrap Icons.
-- **Custom icons**: Easily create your own icons by specifying a name and 1-2 image fragments (`path`).
-- **Two-color customization**: Adjust up to two colors to enhance the visual appeal of icons.
+- **Ready-to-use icons**: Leverage the extensive [Bootstrap Icons](https://icons.getbootstrap.com/) collection without creating icons from scratch.
+- **Colored icons**: Transform monochrome Bootstrap Icons into colored ones by specifying up to two colors for fragments (`path`).
+- **Compactness**: Optimize your project by including only the necessary icons instead of the full set of 2000+.
+- **Custom icons**: Quickly create your own icons by specifying a name and, for example, 1-2 image fragments (`path`).
+- **Cross-platform compatibility**: Use Bootstrap Icons not only in web applications but also in Avalonia and WPF applications. 
 
 ## Installation
 
