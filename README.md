@@ -38,24 +38,30 @@ npm install path-icons --save-dev
    npm install path-icons --save-dev
    ```
 
-2. **Create an `app-icons.json` file**:
+2. **Create a** `my-icons.json` **file**:
+
    ```json
    {
-     "bootstrap": null,
-     "path-icons": null,
-     "window-sidebar": null,
-     "funnel": null,
-     "sort-alpha-down": null
+    "sign-stop-fill": null,
+    "x-octagon-fill": { "colorBefore": "#dc3545" },
+    "exclamation-triangle-fill": { "colorBefore": "#ffc107" },
+    "file-earmark-arrow-down": { "colorBefore": "#0d6efd", "colorAfter": "Green" },
+    "file-earmark-arrow-up": { "colorBefore": "Gold", "colorAfter": "Green" },
+    "custom1": { "pathBefore": "M3,3 8,6 13,3 10,8 13,13 8,10 3,13 6,8z", "colorBefore": "Red" },
+    "custom2": { "pathBefore": "M0,0H16V16H0z", "colorBefore": "Green", "pathAfter": "M5,3 13,11 11,13 3,5z M13,5 5,13 3,11 11,3z", "colorAfter": "Red" }
    }
    ```
 
+   The file specifies icons from Bootstrap Icons: unchanged (`sign-stop-fill`), with one color defined (`x-octagon-fill`, `exclamation-triangle-fill`), with two colors defined for image fragments (`file-earmark-arrow-down`, `file-earmark-arrow-up`). It also includes definitions for custom icons (`custom1`, `custom2`).
+
 3. **Run the generator**:
    ```bash
-   npx path-icons --input app-icons.json --verbose
+   npx path-icons --input my-icons.json --verbose
    ```
 
 4. **Review the results**:
-   Generated files are located in the `dist` directory. Open `dist/app-icons.html` in a browser to preview the icons.
+
+   Generated files are located in the `dist` directory. Open `dist/app-icons.html` in a browser to preview the icons. An example result is also available [here](https://schavelev.github.io/path-icons/examples/quick-start/my-icons.html).
  
 ## License
 
