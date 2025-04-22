@@ -66,6 +66,60 @@ npm install path-icons --save-dev
    Сгенерированные файлы находятся в директории `dist`. Откройте `dist/app-icons.html` в браузере для предварительного просмотра иконок.
    Пример результата также доступен по [ссылке](https://schavelev.github.io/path-icons/examples/quick-start/my-icons.html).
 
+## Примеры
+
+Ниже описаны шаги для сборки и запуска примеров использования `path-icons`. Все команды выполняются из корня проекта.
+
+### Клонирование и сборка
+Клонируйте репозиторий и выполните сборку проекта:
+```bash
+git clone https://github.com/schavelev/path-icons.git
+cd path-icons
+npm install
+npm run build
+```
+Результат: сгенерирован файл `dist/path-icons.json` в корне проекта.
+
+### Пример `app-icons`
+Простейший пример генерации CSS-файла для веб-приложений.  
+Файл конфигурации `path-icons.config.json` задаёт входной файл `app-icons.json` и выходные файлы (`css`, `html`).
+```bash
+cd examples/app-icons
+npx path-icons --verbose
+```
+Результат: сгенерированы файлы `dist/app-icons.css` и `dist/app-icons.html`.  
+Откройте `dist/app-icons.html` в браузере для просмотра иконок.
+
+### Пример `AppIcons/SharedLib`
+Генерация C#-файла с определениями иконок для приложений Avalonia и WPF.  
+Файл конфигурации `path-icons.config.json` задаёт входной файл `shared-lib-icons.json` и выходные файлы (`css`, `html`, `csharp`).
+Из корня проекта выполните:
+```bash
+cd examples/AppIcons/SharedLib
+npx path-icons --verbose
+```
+Результат: сгенерированы файлы `Bootstrap/BootstrapSymbol.cs`, `dist/shared-lib-icons.css` и `dist/shared-lib-icons.html` (последний удобен для проверки набора иконок).
+
+### Пример `AppIcons/TryAvalonia`
+Пример использования иконок из `AppIcons/SharedLib` в приложении Avalonia.
+Из корня проекта выполните:
+```bash
+cd examples/AppIcons/TryAvalonia
+dotnet build
+dotnet run
+```
+Результат: запускается десктоп-приложение с двумя панелями кнопок, использующими монохромные и цветные иконки.
+
+### Пример `AppIcons/TryWpf`
+Пример использования иконок из `AppIcons/SharedLib` в приложении WPF.
+Из корня проекта выполните:
+```bash
+cd examples/AppIcons/TryWpf
+dotnet build
+dotnet run
+```
+Результат: запускается десктоп-приложение с панелью инструментов (ToolBar), содержащей кнопки с иконками.
+
 ## Лицензия
 
 Распространяется под лицензией MIT. Подробности смотрите в файле [LICENSE](LICENSE).

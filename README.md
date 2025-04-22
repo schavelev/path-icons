@@ -63,6 +63,60 @@ npm install path-icons --save-dev
 
    Generated files are located in the `dist` directory. Open `dist/app-icons.html` in a browser to preview the icons. An example result is also available [here](https://schavelev.github.io/path-icons/examples/quick-start/my-icons.html).
  
+## Examples
+
+The following steps describe how to build and run examples using `path-icons`. All commands are executed from the project root.
+
+### Cloning and Building
+Clone the repository and build the project:
+```bash
+git clone https://github.com/schavelev/path-icons.git
+cd path-icons
+npm install
+npm run build
+```
+Result: Generated file `dist/path-icons.json` in the project root.
+
+### Example `app-icons`
+A simple example of generating a CSS file for web applications.  
+The configuration file `path-icons.config.json` specifies the input file `app-icons.json` and output files (`css`, `html`).
+```bash
+cd examples/app-icons
+npx path-icons --verbose
+```
+Result: Generated files `dist/app-icons.css` and `dist/app-icons.html`.  
+Open `dist/app-icons.html` in a browser to view the icons.
+
+### Example `AppIcons/SharedLib`
+Generates a C# file with icon definitions for Avalonia and WPF applications.  
+The configuration file `path-icons.config.json` specifies the input file `shared-lib-icons.json` and output files (`css`, `html`, `csharp`).  
+From the project root, execute:
+```bash
+cd examples/AppIcons/SharedLib
+npx path-icons --verbose
+```
+Result: Generated files `Bootstrap/BootstrapSymbol.cs`, `dist/shared-lib-icons.css`, and `dist/shared-lib-icons.html` (the latter is useful for verifying the icon set).
+
+### Example `AppIcons/TryAvalonia`
+Example of using icons from `AppIcons/SharedLib` in an Avalonia application.  
+From the project root, execute:
+```bash
+cd examples/AppIcons/TryAvalonia
+dotnet build
+dotnet run
+```
+Result: Launches a desktop application with two panels of buttons using monochrome and colored icons.
+
+### Example `AppIcons/TryWpf`
+Example of using icons from `AppIcons/SharedLib` in a WPF application.  
+From the project root, execute:
+```bash
+cd examples/AppIcons/TryWpf
+dotnet build
+dotnet run
+```
+Result: Launches a desktop application with a ToolBar containing buttons with icons.
+
 ## License
 
 Licensed under the MIT License. See [LICENSE](LICENSE) for details.
