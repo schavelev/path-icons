@@ -1,0 +1,45 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:ui="clr-namespace:TryWpf.Controls">
+
+    <!--Размер айконки по-умолчанию-->
+    <sys:Double x:Key="IconElementSize">16</sys:Double>
+
+    <!--Аналог PathIcon из Avalonia-->
+    <Style TargetType="ui:BootstrapIcon">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="PrimaryForeground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="SecondaryForeground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="Height" Value="{DynamicResource IconElementSize}" />
+        <Setter Property="Width" Value="{DynamicResource IconElementSize}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ui:BootstrapIcon">
+                    <Border Background="{TemplateBinding Background}">
+                        <Viewbox Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                                 Stretch="Uniform">
+                            <Grid x:Name="InnerGrid">
+                                <Path Width="16" Height="16"
+								      Stretch="None"
+                                      Fill="{TemplateBinding PrimaryForeground}"
+                                      Data="{TemplateBinding PrimaryGeometry}" />
+                                <Path Width="16" Height="16"
+								      Stretch="None"
+                                      Fill="{TemplateBinding SecondaryForeground}"
+                                      Data="{TemplateBinding SecondaryGeometry}" />
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="InnerGrid" Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
