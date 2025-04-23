@@ -10,6 +10,20 @@
         x:Class="TryAvalonia.MainWindow"
         Title="TryAvalonia">
 	<Window.Resources>
+		<!-- 
+        Collection of SVG Path definitions (Bootstrap Icons).
+        Note: Hardcoded paths are for demonstration only.
+        In production, consider using a proper icon library or resource files.
+        -->
+		<StreamGeometry x:Key="WindowSidebarPath">M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1m2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1 M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v2H1V3a1 1 0 0 1 1-1zM1 13V6h4v8H2a1 1 0 0 1-1-1m5 1V6h9v7a1 1 0 0 1-1 1z</StreamGeometry>
+		<StreamGeometry x:Key="FunnelPath">M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z</StreamGeometry>
+		<StreamGeometry x:Key="SortAlphaDownPath">M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371zm1.57-.785L11 2.687h-.047l-.652 2.157z M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293z</StreamGeometry>
+		<StreamGeometry x:Key="FileEarmarkArrowDownPath">M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z</StreamGeometry>
+		<StreamGeometry x:Key="FileEarmarkArrowUpPath">M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707z M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z</StreamGeometry>
+		<StreamGeometry x:Key="FileEarmarkSpreadsheetPath">M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5zM3 12v-2h2v2zm0 1h2v2H4a1 1 0 0 1-1-1zm3 2v-2h3v2zm4 0v-2h3v1a1 1 0 0 1-1 1zm3-3h-3v-2h3zm-7 0v-2h3v2z</StreamGeometry>
+		<StreamGeometry x:Key="GraphUpArrowPath">M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5</StreamGeometry>
+
+		<!-- Default size for all BootstrapIcons in this Window. -->
 		<x:Double x:Key="BootstrapIconSize">32</x:Double>
 	</Window.Resources>
 	<Window.Styles>
@@ -27,52 +41,52 @@
 		</Style>
 	</Window.Styles>
 	<DockPanel>
-		<!-- PathIcon without colors -->
+		<!-- BootstrapIcons without colors -->
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
 			<Button>
 				<StackPanel>
-					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.WindowSidebar}}" />
+					<PathIcon Data="{StaticResource WindowSidebarPath}" />
 					<TextBlock Text="Sidebar"/>
 				</StackPanel>
 			</Button>
 			<Button>
 				<StackPanel>
-					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.Funnel}}" />
+					<PathIcon Data="{StaticResource FunnelPath}}" />
 					<TextBlock Text="Filter" />
 				</StackPanel>
 			</Button>
 			<Button>
 				<StackPanel>
-					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.SortAlphaDown}}" />
+					<PathIcon Data="{StaticResource SortAlphaDownPath}}" />
 					<TextBlock Text="Sort" />
 				</StackPanel>
 			</Button>
 			<Button>
 				<StackPanel>
-					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.FileEarmarkArrowDown}}" />
+					<PathIcon Data="{StaticResource FileEarmarkArrowDownPath}}" />
 					<TextBlock Text="Export" />
 				</StackPanel>
 			</Button>
 			<Button>
 				<StackPanel>
-					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.FileEarmarkArrowUp}}" />
+					<PathIcon Data="{StaticResource FileEarmarkArrowUpPath}}" />
 					<TextBlock Text="Import" />
 				</StackPanel>
 			</Button>
 			<Button>
 				<StackPanel>
-					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.FileEarmarkSpreadsheet}}" />
+					<PathIcon Data="{StaticResource FileEarmarkSpreadsheetPath}}" />
 					<TextBlock Text="Excel" />
 				</StackPanel>
 			</Button>
 			<Button>
 				<StackPanel>
-					<PathIcon Data="{me:BootstrapGeometry Symbol={x:Static bs:BootstrapSymbol.GraphUpArrow}}" />
+					<PathIcon Data="{StaticResource GraphUpArrowPath}}" />
 					<TextBlock Text="Report" />
 				</StackPanel>
 			</Button>
 		</StackPanel>
-		<!-- BootstrapIcon -->		
+		<!-- BootstrapIcons with colors -->
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
 			<Button>
 				<StackPanel>
