@@ -1,6 +1,6 @@
 {
   "name": "path-icons",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A utility for generating JSON and CSS with SVG path-based icons",
   "bin": {
     "path-icons": "bin/path-icons.mjs"
