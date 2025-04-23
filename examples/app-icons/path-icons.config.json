@@ -2,7 +2,7 @@
   "verbose": false,
   "input": "app-icons.json",
   "outDir": "dist",
-  "json": true,
+  "json": false,
   "css": true,
   "html": true,
   "csharp": false

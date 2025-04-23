@@ -33,6 +33,5 @@ jobs:
 
       - name: Verify output
         run: |
-          ls examples/app-icons/dist/app-icons.json
           ls examples/app-icons/dist/app-icons.css
           ls examples/app-icons/dist/app-icons.html
