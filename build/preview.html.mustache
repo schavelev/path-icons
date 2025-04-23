@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Path Icons Preview</title>
-    <link rel="stylesheet" href="{{cssPath}}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,6 +44,10 @@
             border: 1px solid #ccc;
             padding: 8px;
         }
+
+{{! Embed the generated CSS content here using triple braces for unescaped output }}
+{{{cssContent}}}
+
     </style>
 </head>
 <body>

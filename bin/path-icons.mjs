@@ -25,7 +25,7 @@ async function loadConfig(configPath, inputArg) {
             if (inputArg) {
                 return {
                     outDir: 'dist',
-                    json: true,
+                    json: false,
                     css: true,
                     html: true
                 };
@@ -156,14 +156,9 @@ function buildOptions({ config, inputArg, verboseArg }) {
 
         // Generate HTML if requested
         if (opts.html) {
-            const cssFilePath = resolve(opts.css);
             const htmlFilePath = resolve(opts.html);
-            if (!cssFilePath) {
-                throw new Error('HTML generation requires CSS to be specified');
-            }
-            const cssRelativePath = relative(dirname(htmlFilePath), cssFilePath);
             await fs.mkdir(dirname(htmlFilePath), { recursive: true });
-            await createHtml(mergedData, htmlFilePath, cssRelativePath);
+            await createHtml(mergedData, htmlFilePath);
             if (opts.verbose) {
                 console.log(`Generated HTML at ${htmlFilePath}`);
             }

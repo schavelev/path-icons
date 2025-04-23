@@ -20,10 +20,10 @@ const HTML_TEMPLATE_FILE = join(__dirname, 'preview.html.mustache');
  * Merges base JSON and override JSON, optionally including new icons.
  * @param {string} baseJsonPath - Path to base JSON file.
  * @param {string} overrideJsonPath - Path to override JSON file.
- * @param {boolean} addNew - If true, include new icons from override; if false, only update existing.
+ * @param {boolean} mergeAll - If true, include new icons from override; if false, only update existing.
  * @returns {Promise<object>} Merged icon data.
  */
-async function prepareJson(baseJsonPath, overrideJsonPath, addNew) {
+async function prepareJson(baseJsonPath, overrideJsonPath, mergeAll) {
     try {
         // Read base JSON
         const baseData = JSON.parse(await fs.readFile(baseJsonPath, 'utf8'));
@@ -39,7 +39,7 @@ async function prepareJson(baseJsonPath, overrideJsonPath, addNew) {
 
         // Merge data
         const merged = {};
-        if (addNew) {
+        if (mergeAll) {
             // Merge all icons, preserving fields from base and overriding with override
             const allIconNames = [...new Set([...Object.keys(baseData), ...Object.keys(overrideData)])];
             for (const iconName of allIconNames) {
@@ -65,15 +65,16 @@ async function prepareJson(baseJsonPath, overrideJsonPath, addNew) {
 }
 
 /**
- * Generates CSS from merged icon data and writes it to output path.
+ * Generates the raw CSS content string from merged icon data.
  * @param {object} mergedData - Merged icon data.
- * @param {string} outputCssPath - Path for output CSS file.
- * @returns {Promise<void>}
+ * @returns {Promise<string>} The generated CSS content string.
  */
-async function createCSS(mergedData, outputCssPath) {
+async function generateCssContent(mergedData) {
     try {
-        // Compile CSS template
+        // Load CSS template
         const baseCSSTemplate = await fs.readFile(CSS_TEMPLATE_FILE, 'utf8');
+
+        // Generate icon rules
         const iconNames = Object.keys(mergedData);
         const iconRules = iconNames
             .map(iconName => {
@@ -101,11 +102,31 @@ async function createCSS(mergedData, outputCssPath) {
             .filter(Boolean)
             .join('\n');
 
+        // Render the final CSS string
         const finalCSS = Mustache.render(baseCSSTemplate, { iconRules: iconRules });
+
+        return finalCSS; // Return the generated string
+
+    } catch (error) {
+        console.error('Error generating CSS content:', error);
+        throw error;
+    }
+}
+
+
+/**
+ * Generates CSS from merged icon data and writes it to output path.
+ * @param {object} mergedData - Merged icon data.
+ * @param {string} outputCssPath - Path for output CSS file.
+ * @returns {Promise<void>}
+ */
+async function createCSS(mergedData, outputCssPath) {
+    try {
+        const finalCSS = await generateCssContent(mergedData);
 
         // Write CSS output
         await fs.mkdir(dirname(outputCssPath), { recursive: true });
-        await fs.writeFile(outputCssPath, finalCSS, 'utf8');
+        await fs.writeFile(outputCssPath, finalCSS, 'utf8'); 
     } catch (error) {
         console.error('Error generating CSS:', error);
         throw error;
@@ -119,7 +140,7 @@ async function createCSS(mergedData, outputCssPath) {
  * @param {string} cssPath - Relative path to CSS file.
  * @returns {Promise<void>}
  */
-async function createHtml(mergedData, outputHtmlPath, cssPath) {
+async function createHtml(mergedData, outputHtmlPath) {
     try {
         // Extract icon data with names and headers
         const iconsData = Object.entries(mergedData)
@@ -132,9 +153,12 @@ async function createHtml(mergedData, outputHtmlPath, cssPath) {
         // Load HTML template
         const htmlTemplate = await fs.readFile(HTML_TEMPLATE_FILE, 'utf8');
 
+        // Prepare CSS content
+        const cssContent = await generateCssContent(mergedData);
+
         // Render template
         const htmlContent = Mustache.render(htmlTemplate, {
-            cssPath,
+            cssContent: cssContent,
             icons: iconsData
         });
 
@@ -259,8 +283,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
             // Generate HTML if requested
             if (outputHtmlPath) {
-                const cssPath = relative(dirname(outputHtmlPath), outputCssPath);
-                await createHtml(mergedData, outputHtmlPath, cssPath);
+                await createHtml(mergedData, outputHtmlPath);
             }
         } catch (error) {
             console.error('Error:', error);
