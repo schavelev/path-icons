@@ -7,7 +7,7 @@
   },
   "scripts": {
     "update-bi": "node build/update-bi-json.mjs",
-    "build": "node build/pi-processor.mjs",
+    "build": "node bin/path-icons.mjs --rebuild",
     "start": "node bin/path-icons.mjs",
     "prepublishOnly": "npm run build"
   },

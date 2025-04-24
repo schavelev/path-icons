@@ -1,51 +1,49 @@
-#!/usr/bin/env node
 import { promises as fs } from 'fs';
-import { join, resolve, dirname, relative, basename, extname } from 'path';
+import { join, dirname, basename, extname } from 'path';
 import { fileURLToPath } from 'url';
 import Mustache from 'mustache';
 
-const args = process.argv.slice(2);
-
 // Define file paths and constants
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const BI_JSON_FILE = join(__dirname, '../src/bi.json');
-const OVERRIDE_JSON_FILE = join(__dirname, '../src/bi-override.json');
-const DEFAULT_OUTPUT_JSON_FILE = join(__dirname, '../dist/path-icons.json');
-const DEFAULT_OUTPUT_CSS_FILE = join(__dirname, '../dist/path-icons.css');
-const DEFAULT_OUTPUT_HTML_FILE = join(__dirname, '../dist/path-icons.html');
 const CSS_TEMPLATE_FILE = join(__dirname, 'base.css.mustache');
 const HTML_TEMPLATE_FILE = join(__dirname, 'preview.html.mustache');
 
 /**
  * Merges base JSON and override JSON, optionally including new icons.
  * @param {string} baseJsonPath - Path to base JSON file.
- * @param {string} overrideJsonPath - Path to override JSON file.
- * @param {boolean} mergeAll - If true, include new icons from override; if false, only update existing.
+ * @param {string} sourceJsonPath - Path to source JSON file.
+ * @param {object} options - Configuration options.
+ * @param {boolean} [options.addSource] - If true, include new icons from source; if false, only update existing.
  * @returns {Promise<object>} Merged icon data.
  */
-async function prepareJson(baseJsonPath, overrideJsonPath, mergeAll) {
+async function prepareJson(baseJsonPath, sourceJsonPath, options = {}) {
+    const jsonOptions = options.jsonOptions || {};    
     try {
+        const {
+            addSource = false
+        } = jsonOptions;
+
         // Read base JSON
         const baseData = JSON.parse(await fs.readFile(baseJsonPath, 'utf8'));
 
         // Read override JSON, default to empty object if not found
-        let overrideData = {};
+        let sourceData = {};
         try {
-            overrideData = JSON.parse(await fs.readFile(overrideJsonPath, 'utf8'));
+            sourceData = JSON.parse(await fs.readFile(sourceJsonPath, 'utf8'));
         } catch (error) {
-            console.error(`Error loading ${overrideJsonPath}, using base JSON only.`);
+            console.error(`Error loading ${sourceJsonPath}, using base JSON only.`);
             console.error(error);
         }
 
         // Merge data
         const merged = {};
-        if (mergeAll) {
+        if (addSource) {
             // Merge all icons, preserving fields from base and overriding with override
-            const allIconNames = [...new Set([...Object.keys(baseData), ...Object.keys(overrideData)])];
+            const allIconNames = [...new Set([...Object.keys(baseData), ...Object.keys(sourceData)])];
             for (const iconName of allIconNames) {
                 merged[iconName] = {
                     ...(baseData[iconName] || {}),
-                    ...(overrideData[iconName] || {})
+                    ...(sourceData[iconName] || {})
                 };
             }
         } else {
@@ -53,7 +51,7 @@ async function prepareJson(baseJsonPath, overrideJsonPath, mergeAll) {
             for (const iconName of Object.keys(baseData)) {
                 merged[iconName] = {
                     ...baseData[iconName],
-                    ...(overrideData[iconName] || {})
+                    ...(sourceData[iconName] || {})
                 };
             }
         }
@@ -258,36 +256,3 @@ async function createCSharp(mergedData, outputCsharpPath, options = {}) {
     }
 }
 export { prepareJson, createCSS, createHtml, createCSharp };
-
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    const JSON_INDEX = args.indexOf('--json');
-    const CSS_INDEX = args.indexOf('--css');
-    const HTML_INDEX = args.indexOf('--html');
-
-    const outputJsonPath = JSON_INDEX !== -1 ? resolve(args[JSON_INDEX + 1]) : DEFAULT_OUTPUT_JSON_FILE;
-    const outputCssPath = CSS_INDEX !== -1 ? resolve(args[CSS_INDEX + 1]) : DEFAULT_OUTPUT_CSS_FILE;
-    const outputHtmlPath = HTML_INDEX !== -1 ? resolve(args[HTML_INDEX + 1]) : (args.includes('--html') ? DEFAULT_OUTPUT_HTML_FILE : null);
-
-    (async () => {
-        try {
-            // Merge icon data
-            const mergedData = await prepareJson(BI_JSON_FILE, OVERRIDE_JSON_FILE, true);
-
-            // Write merged JSON data
-            await fs.mkdir(dirname(outputJsonPath), { recursive: true });
-            await fs.writeFile(outputJsonPath, JSON.stringify(mergedData, null, 2), 'utf8');
-            console.log(`Generated JSON data at ${outputJsonPath}`);
-
-            // Generate CSS
-            await createCSS(mergedData, outputCssPath);
-
-            // Generate HTML if requested
-            if (outputHtmlPath) {
-                await createHtml(mergedData, outputHtmlPath);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            process.exit(1);
-        }
-    })();
-}
