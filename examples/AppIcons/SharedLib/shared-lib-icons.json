@@ -34,5 +34,15 @@
     "header": "Report",
     "colorBefore": "#0d6efd",
     "colorAfter": "#0d6efd"
+  },
+  "custom1": {
+    "pathBefore": "M3,3 8,6 13,3 10,8 13,13 8,10 3,13 6,8z",
+    "colorBefore": "Red"
+  },
+  "custom2": {
+    "pathBefore": "M0,0H16V16H0z",
+    "colorBefore": "Green",
+    "pathAfter": "M5,3 13,11 11,13 3,5z M13,5 5,13 3,11 11,3z",
+    "colorAfter": "Red"
   }
 }

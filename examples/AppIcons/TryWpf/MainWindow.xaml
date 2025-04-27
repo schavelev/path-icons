@@ -7,7 +7,7 @@
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:local="clr-namespace:TryWpf"
         mc:Ignorable="d"
-        Title="PathIcons and BootstrapIcons" Height="300" Width="500">
+        Title="PathIcons and BootstrapIcons" Height="300" Width="600">
     <Window.Resources>
         <!-- 
         Collection of SVG Path definitions (Bootstrap Icons).
@@ -147,6 +147,19 @@
                     <StackPanel>
                         <ui:BootstrapIcon Symbol="GraphUpArrow"/>
                         <TextBlock Text="Report"/>
+                    </StackPanel>
+                </Button>
+                <Separator />
+                <Button>
+                    <StackPanel>
+                        <ui:BootstrapIcon Symbol="Custom1"/>
+                        <TextBlock Text="Custom1"/>
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel>
+                        <ui:BootstrapIcon Symbol="Custom2"/>
+                        <TextBlock Text="Custom2"/>
                     </StackPanel>
                 </Button>
             </ToolBar>

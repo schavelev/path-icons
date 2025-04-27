@@ -5,8 +5,8 @@
 		xmlns:bs="using:SharedLib.Bootstrap"
 		xmlns:me="using:TryAvalonia.MarkupExtensions"
 		xmlns:ui="using:TryAvalonia"
-        Width="600" Height="300"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="300"
+        Width="650" Height="300"
+        mc:Ignorable="d"
         x:Class="TryAvalonia.MainWindow"
         Title="TryAvalonia">
 	<Window.Resources>
@@ -128,6 +128,18 @@
 				<StackPanel>
 					<ui:BootstrapIcon Symbol="GraphUpArrow" />
 					<TextBlock Text="Report" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="Custom1" />
+					<TextBlock Text="Custom1" />
+				</StackPanel>
+			</Button>
+			<Button>
+				<StackPanel>
+					<ui:BootstrapIcon Symbol="Custom2" />
+					<TextBlock Text="Custom2" />
 				</StackPanel>
 			</Button>
 		</StackPanel>

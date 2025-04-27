@@ -41,4 +41,11 @@ public enum BootstrapSymbol
     // Report, graph-up-arrow
     [SymbolPath("M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5", 0xff0d6efd)]
     GraphUpArrow,
+    // custom1
+    [SymbolPath("M3,3 8,6 13,3 10,8 13,13 8,10 3,13 6,8z", KnownColor.Red)]
+    Custom1,
+    // custom2
+    [SymbolPath("M0,0H16V16H0z", KnownColor.Green)]
+    [SymbolPath("M5,3 13,11 11,13 3,5z M13,5 5,13 3,11 11,3z", KnownColor.Red)]
+    Custom2,
 }
