@@ -17,21 +17,21 @@ internal class SymbolPathAttribute : Attribute
     // Initializes the attribute with path data and no fill color (defaults to Color.Empty).
     public SymbolPathAttribute(string pathData)
     {
-        PathData = pathData;
+        PathData = pathData ?? throw new ArgumentNullException(nameof(pathData));
         FillColor = Color.Empty;
     }
 
     // Initializes the attribute with path data and a fill color specified as an ARGB uint value.
     public SymbolPathAttribute(string pathData, uint ardb)
     {
-        PathData = pathData;
+        PathData = pathData ?? throw new ArgumentNullException(nameof(pathData));
         FillColor = Color.FromArgb((int)ardb);
     }
 
     // Initializes the attribute with path data and a fill color specified as a KnownColor enum value.
     public SymbolPathAttribute(string pathData, KnownColor knownColor)
     {
-        PathData = pathData;
+        PathData = pathData ?? throw new ArgumentNullException(nameof(pathData));
         FillColor = Color.FromKnownColor(knownColor);
     }
 }
