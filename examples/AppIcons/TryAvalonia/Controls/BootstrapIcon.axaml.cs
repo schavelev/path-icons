@@ -24,22 +24,17 @@ public class BootstrapIcon : IconElement // PathIcon
     private void OnSymbolChanged(AvaloniaPropertyChangedEventArgs e)
     {
         var symb = e.GetNewValue<BootstrapSymbol>();
-        if (_symbolDataCache.TryGetValue(symb, out var pathData))
+        if (!_symbolDataCache.TryGetValue(symb, out var pathData))
         {
-            // Use cached data if available.
-            ApplySymbolData(pathData);
-        }
-        else
-        {
-            // Parse and cache new symbol data, then apply it.
-            pathData = ConvertToSymbolParsed(symb);
+            // Parse and cache new symbol data
+            pathData = CreateSymbolParsed(symb);
             _symbolDataCache.Add(symb, pathData);
-            ApplySymbolData(pathData);
         }
+        ApplySymbolData(pathData);
     }
 
     // Converts a BootstrapSymbol into parsed geometry and brush data for rendering.
-    static SymbolParsed ConvertToSymbolParsed(BootstrapSymbol symb)
+    static SymbolParsed CreateSymbolParsed(BootstrapSymbol symb)
     {
         try
         {
@@ -87,6 +82,10 @@ public class BootstrapIcon : IconElement // PathIcon
         }
     }
 
+    // Converts an ARGB uint value into a SolidColorBrush, or null if the value is 0.
+    private static IBrush? GetBrushFromArgb(uint ardb)
+        => ardb == 0 ? null : new SolidColorBrush(ardb);
+
     #region // Properties
     public static readonly StyledProperty<BootstrapSymbol> SymbolProperty =
         AvaloniaProperty.Register<BootstrapIcon, BootstrapSymbol>(nameof(Symbol), BootstrapSymbol.None);
@@ -96,42 +95,38 @@ public class BootstrapIcon : IconElement // PathIcon
         set => SetValue(SymbolProperty, value);
     }
 
-    public static readonly StyledProperty<Geometry?> PrimaryGeometryProperty =
+    internal static readonly StyledProperty<Geometry?> PrimaryGeometryProperty =
         AvaloniaProperty.Register<BootstrapIcon, Geometry?>(nameof(PrimaryGeometry));
-    public Geometry? PrimaryGeometry
+    internal Geometry? PrimaryGeometry
     {
         get => GetValue(PrimaryGeometryProperty);
         set => SetValue(PrimaryGeometryProperty, value);
     }
 
-    public static readonly StyledProperty<IBrush?> PrimaryForegroundProperty =
+    internal static readonly StyledProperty<IBrush?> PrimaryForegroundProperty =
         AvaloniaProperty.Register<BootstrapIcon, IBrush?>(nameof(PrimaryForeground));
-    public IBrush? PrimaryForeground
+    internal IBrush? PrimaryForeground
     {
         get => GetValue(PrimaryForegroundProperty);
         set => SetValue(PrimaryForegroundProperty, value);
     }
 
-    public static readonly StyledProperty<Geometry?> SecondaryGeometryProperty =
+    internal static readonly StyledProperty<Geometry?> SecondaryGeometryProperty =
         AvaloniaProperty.Register<BootstrapIcon, Geometry?>(nameof(SecondaryGeometry));
-    public Geometry? SecondaryGeometry
+    internal Geometry? SecondaryGeometry
     {
         get => GetValue(SecondaryGeometryProperty);
         set => SetValue(SecondaryGeometryProperty, value);
     }
 
-    public static readonly StyledProperty<IBrush?> SecondaryForegroundProperty =
+    internal static readonly StyledProperty<IBrush?> SecondaryForegroundProperty =
         AvaloniaProperty.Register<BootstrapIcon, IBrush?>(nameof(SecondaryForeground));
-    public IBrush? SecondaryForeground
+    internal IBrush? SecondaryForeground
     {
         get => GetValue(SecondaryForegroundProperty);
         set => SetValue(SecondaryForegroundProperty, value);
     }
     #endregion
-
-    // Converts an ARGB uint value into a SolidColorBrush, or null if the value is 0.
-    private static IBrush? GetBrushFromArgb(uint ardb)
-        => ardb == 0 ? null : new SolidColorBrush(ardb);
 
     // A struct to hold parsed geometry and brush data for a symbol.
     private readonly struct SymbolParsed
