@@ -16,7 +16,7 @@ public static partial class BootstrapSymbolExtensions
     }
 
     // Splits SVG path data into primary and secondary paths with their respective colors.
-    public static (string?, uint, string?, uint) GetDualPathDefinition(this BootstrapSymbol value)
+    public static (string?, uint, string?, uint) GetGeometryDefinition(this BootstrapSymbol value)
     {
         string? primaryPath = null;
         uint primaryArgb = 0;

@@ -35,7 +35,7 @@ public class BootstrapIcon : Control
     {
         try
         {
-            var (primaryPath, primaryArgb, secondaryPath, secondaryArgb) = symb.GetDualPathDefinition();
+            var (primaryPath, primaryArgb, secondaryPath, secondaryArgb) = symb.GetGeometryDefinition();
 
             Geometry? primaryGeo = Geometry.Parse(primaryPath ?? "");
             Brush? primaryBrush = GetBrushFromArgb(primaryArgb);

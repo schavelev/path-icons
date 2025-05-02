@@ -1,50 +1,53 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="using:TryAvalonia">
-	<!-- Design preview configuration for visualizing the BootstrapIcon in a design environment. -->
-	<Design.PreviewWith>
-		<StackPanel Spacing="10">
-			<StackPanel Margin="4">
-				<ui:BootstrapIcon Symbol="PathIcons" Width="32" Height="32" />
-			</StackPanel>
-		</StackPanel>
-	</Design.PreviewWith>
+    <!-- Design preview configuration for visualizing the BootstrapIcon in a design environment. -->
+    <Design.PreviewWith>
+        <StackPanel Margin="4" Spacing="8" Orientation="Horizontal">
+            <ui:BootstrapIcon PrimaryGeometry="M3,3 8,6 13,3 10,8 13,13 8,10 3,13 6,8z"
+                              PrimaryForeground="BlueViolet"/>
+            <ui:BootstrapIcon Symbol="Bootstrap"/>
+            <ui:BootstrapIcon Symbol="PathIcons" />
+            <ui:BootstrapIcon Symbol="Custom1" Width="32" Height="32" />
+            <ui:BootstrapIcon Symbol="Custom2" Width="32" Height="32" />
+        </StackPanel>
+    </Design.PreviewWith>
 
-	<!-- Defines the default size for BootstrapIcon controls (16x16 pixels). -->
-	<x:Double x:Key="BootstrapIconSize">16</x:Double>
+    <!-- Defines the default size for BootstrapIcon controls (20x20 pixels). -->
+    <x:Double x:Key="BootstrapIconSize">20</x:Double>
 
-	<!-- Control theme for the BootstrapIcon control, defining its appearance and behavior. -->
-	<ControlTheme x:Key="{x:Type ui:BootstrapIcon}" TargetType="ui:BootstrapIcon">
-		<Setter Property="Background" Value="Transparent" />
-		<Setter Property="PrimaryForeground" Value="{DynamicResource TextControlForeground}" />
-		<Setter Property="SecondaryForeground" Value="{DynamicResource TextControlForeground}" />
-		<Setter Property="Height" Value="{DynamicResource BootstrapIconSize}" />
-		<Setter Property="Width" Value="{DynamicResource BootstrapIconSize}" />
-		<Setter Property="UseLayoutRounding" Value="False" />
-		<Setter Property="Template">
-			<ControlTemplate>
-				<Border Background="{TemplateBinding Background}">
-					<!-- Scales the icon uniformly to fit within the control's size. -->
-					<Viewbox Stretch="Uniform">
-						<Panel>
-							<!-- Primary path for the icon, using the primary geometry and foreground color. -->
-							<Path Width="16" Height="16"
-								  Stretch="None"
-								  Fill="{TemplateBinding PrimaryForeground}"
-								  Data="{TemplateBinding PrimaryGeometry}" />
-							<!-- Secondary path for the icon, using the secondary geometry and foreground color. -->
-							<Path Width="16" Height="16"
-								  Stretch="None"
-								  Fill="{TemplateBinding SecondaryForeground}"
-								  Data="{TemplateBinding SecondaryGeometry}"/>
-						</Panel>
-					</Viewbox>
-				</Border>
-			</ControlTemplate>
-		</Setter>
-		<!-- Style to reduce opacity of the icon's panel when the control is disabled. -->
-		<Style Selector="^:disabled /template/ Panel">
-			<Setter Property="Opacity" Value="0.3" />
-		</Style>
-	</ControlTheme>
+    <!-- Control theme for the BootstrapIcon control, defining its appearance and behavior. -->
+<ControlTheme x:Key="{x:Type ui:BootstrapIcon}" TargetType="ui:BootstrapIcon">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="PrimaryForeground" Value="{DynamicResource TextControlForeground}" />
+    <Setter Property="SecondaryForeground" Value="{DynamicResource TextControlForeground}" />
+    <Setter Property="Height" Value="{DynamicResource BootstrapIconSize}" />
+    <Setter Property="Width" Value="{DynamicResource BootstrapIconSize}" />
+    <Setter Property="UseLayoutRounding" Value="False" />
+    <Setter Property="Template">
+        <ControlTemplate>
+    <Border Background="{TemplateBinding Background}">
+        <!-- Scales the icon uniformly to fit within the control's size. -->
+        <Viewbox Stretch="Uniform">
+            <Panel>
+                <!-- Primary path for the icon, using the primary geometry and foreground color. -->
+                <Path Width="16" Height="16"
+                        Stretch="None"
+                        Fill="{TemplateBinding PrimaryForeground}"
+                        Data="{TemplateBinding PrimaryGeometry}" />
+                <!-- Secondary path for the icon, using the secondary geometry and foreground color. -->
+                <Path Width="16" Height="16"
+                        Stretch="None"
+                        Fill="{TemplateBinding SecondaryForeground}"
+                        Data="{TemplateBinding SecondaryGeometry}"/>
+            </Panel>
+        </Viewbox>
+    </Border>
+        </ControlTemplate>
+    </Setter>
+    <!-- Style to reduce opacity of the icon's panel when the control is disabled. -->
+    <Style Selector="^:disabled /template/ Panel">
+        <Setter Property="Opacity" Value="0.3" />
+    </Style>
+</ControlTheme>
 </ResourceDictionary>

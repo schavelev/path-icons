@@ -17,6 +17,7 @@ public class BootstrapIcon : IconElement // PathIcon
     // Static constructor to set up property change handling for the Symbol property.
     static BootstrapIcon()
     {
+        AffectsRender<BootstrapIcon>(SymbolProperty);
         SymbolProperty.Changed.AddClassHandler<BootstrapIcon>((x, e) => x.OnSymbolChanged(e));
     }
 
@@ -33,59 +34,14 @@ public class BootstrapIcon : IconElement // PathIcon
         ApplySymbolData(pathData);
     }
 
-    // Converts a BootstrapSymbol into parsed geometry and brush data for rendering.
-    static SymbolParsed CreateSymbolParsed(BootstrapSymbol symb)
+
+    public static readonly StyledProperty<Geometry?> DataProperty =
+        AvaloniaProperty.Register<BootstrapIcon, Geometry?>(nameof(Data));
+    public Geometry? Data
     {
-        try
-        {
-            var (primaryPath, primaryArgb, secondaryPath, secondaryArgb) = symb.GetDualPathDefinition();
-            Geometry? primaryGeo = Geometry.Parse(primaryPath ?? "");
-            IBrush? primaryBrush = GetBrushFromArgb(primaryArgb);
-            Geometry? secondaryGeo = Geometry.Parse(secondaryPath ?? "");
-            IBrush? secondaryBrush = GetBrushFromArgb(secondaryArgb);
-
-            // Return parsed data as a SymbolParsed struct.
-            return new SymbolParsed(primaryGeo, primaryBrush, secondaryGeo, secondaryBrush);
-        }
-        catch
-        {
-            // Return empty data if parsing fails.
-            return SymbolParsed.Empty;
-        }
+        get => GetValue(DataProperty);
+        set => SetValue(DataProperty, value);
     }
-
-    // Applies parsed symbol data to the control's properties.
-    private void ApplySymbolData(SymbolParsed data)
-    {
-        // Set primary and secondary geometries.
-        PrimaryGeometry = data.PrimaryGeometry;
-        SecondaryGeometry = data.SecondaryGeometry;
-
-        // Set primary foreground brush if available, otherwise clear the property.
-        if (data.PrimaryForeground != null)
-        {
-            PrimaryForeground = data.PrimaryForeground;
-        }
-        else
-        {
-            ClearValue(PrimaryForegroundProperty);
-        }
-
-        // Set secondary foreground brush if available, otherwise clear the property.
-        if (data.SecondaryForeground != null)
-        {
-            SecondaryForeground = data.SecondaryForeground;
-        }
-        else
-        {
-            ClearValue(SecondaryForegroundProperty);
-        }
-    }
-
-    // Converts an ARGB uint value into a SolidColorBrush, or null if the value is 0.
-    private static IBrush? GetBrushFromArgb(uint ardb)
-        => ardb == 0 ? null : new SolidColorBrush(ardb);
-
     #region // Properties
     public static readonly StyledProperty<BootstrapSymbol> SymbolProperty =
         AvaloniaProperty.Register<BootstrapIcon, BootstrapSymbol>(nameof(Symbol), BootstrapSymbol.None);
@@ -127,6 +83,59 @@ public class BootstrapIcon : IconElement // PathIcon
         set => SetValue(SecondaryForegroundProperty, value);
     }
     #endregion
+    
+    // Converts an ARGB uint value into a SolidColorBrush, or null if the value is 0.
+    private static Brush? CreateBrushFromArgb(uint ardb)
+        => ardb == 0 ? null : new SolidColorBrush(ardb);
+
+    // Converts a BootstrapSymbol into parsed geometry and brush data for rendering.
+    private static SymbolParsed CreateSymbolParsed(BootstrapSymbol symb)
+    {
+        try
+        {
+            var (primaryPath, primaryArgb, secondaryPath, secondaryArgb) = symb.GetGeometryDefinition();
+            Geometry? primaryGeo = Geometry.Parse(primaryPath ?? "");
+            IBrush? primaryBrush = CreateBrushFromArgb(primaryArgb);
+            Geometry? secondaryGeo = Geometry.Parse(secondaryPath ?? "");
+            IBrush? secondaryBrush = CreateBrushFromArgb(secondaryArgb);
+
+            // Return parsed data as a SymbolParsed struct.
+            return new SymbolParsed(primaryGeo, primaryBrush, secondaryGeo, secondaryBrush);
+        }
+        catch
+        {
+            // Return empty data if parsing fails.
+            return SymbolParsed.Empty;
+        }
+    }
+
+    // Applies parsed symbol data to the control's properties.
+    private void ApplySymbolData(SymbolParsed data)
+    {
+        // Set primary and secondary geometries.
+        PrimaryGeometry = data.PrimaryGeometry;
+        SecondaryGeometry = data.SecondaryGeometry;
+
+        // Set primary foreground brush if available, otherwise clear the property.
+        if (data.PrimaryForeground != null)
+        {
+            PrimaryForeground = data.PrimaryForeground;
+        }
+        else
+        {
+            ClearValue(PrimaryForegroundProperty);
+        }
+
+        // Set secondary foreground brush if available, otherwise clear the property.
+        if (data.SecondaryForeground != null)
+        {
+            SecondaryForeground = data.SecondaryForeground;
+        }
+        else
+        {
+            ClearValue(SecondaryForegroundProperty);
+        }
+    }
 
     // A struct to hold parsed geometry and brush data for a symbol.
     private readonly struct SymbolParsed
@@ -147,4 +156,5 @@ public class BootstrapIcon : IconElement // PathIcon
         // An empty SymbolParsed instance for error cases.
         public static SymbolParsed Empty => new(null, null, null, null);
     }
+
 }
