@@ -8,6 +8,82 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const CSS_TEMPLATE_FILE = join(__dirname, 'base.css.mustache');
 const HTML_TEMPLATE_FILE = join(__dirname, 'preview.html.mustache');
 
+
+// Converts a path item (string or object) into a standard path object { d?, fill? }.
+function _toPathObject(item = {}) {
+    if (typeof item === 'string') return { d: item };
+    const { d, fill } = item;
+    return { d, fill };
+}
+
+// Converts a path object { d?, fill? } back into string or object based on fill presence.
+function _fromPathObject(item = {}) {
+    const { d, fill } = item;
+    return fill && d ? { d, fill } : typeof d === 'string' ? d : null;
+}
+
+// Merges data for a single icon
+function _mergeIconData(baseData, sourceData, iconName) {
+    const baseIconData = baseData[iconName];
+    const sourceIconData = sourceData[iconName];
+
+    // If no base data for this icon, use source data if available, otherwise empty array
+    if (!baseIconData) {
+        return Array.isArray(sourceIconData) ? sourceIconData : [];
+    }
+    // If base data is already in the new array format, use it directly (base has priority)
+    if (Array.isArray(baseIconData)) {
+        return baseIconData;
+    }
+    // If base data is string, use it as color
+    if (typeof baseIconData === 'string' && Array.isArray(sourceIconData)) {
+        if (sourceIconData.length > 0) {
+            const item = _toPathObject(sourceIconData[0]);
+            item.fill = baseIconData;
+            sourceIconData[0] = item;
+        } 
+        if (sourceIconData.length > 1) {
+            const item = _toPathObject(sourceIconData[1]);
+            item.fill = baseIconData;
+            sourceIconData[1] = item;
+        }
+        return sourceIconData;
+    }
+
+    // LEGACY format
+    if (baseIconData && typeof baseIconData === 'object' && !Array.isArray(baseIconData)) {
+        const newFormatArray = [];
+        // Handle pathBefore/colorBefore, using source's first element as fallback
+        if (baseIconData.pathBefore || baseIconData.colorBefore) {
+            const srcItem = Array.isArray(sourceIconData) && sourceIconData.length > 0 ? _toPathObject(sourceIconData[0]) : {};
+            const baseItem = {
+                d: baseIconData.pathBefore || srcItem.d,
+                fill: baseIconData.colorBefore || srcItem.fill
+            };
+            const resultItem = _fromPathObject(baseItem);
+            if (resultItem)
+                newFormatArray.push(resultItem);
+        }
+        // Handle pathAfter/colorAfter, using source's second element as fallback
+        if (baseIconData.pathAfter || baseIconData.colorAfter) {
+            const srcItem = Array.isArray(sourceIconData) && sourceIconData.length > 1 ? _toPathObject(sourceIconData[1]) : {};
+            const baseItem = {
+                d: baseIconData.pathAfter|| srcItem.d,
+                fill: baseIconData.colorAfter || srcItem.fill
+            };
+            const resultItem = _fromPathObject(baseItem);
+            if (resultItem)
+                newFormatArray.push(resultItem);
+        }
+
+        return newFormatArray;
+    }
+
+    // If neither source nor base has valid data in expected formats, return empty array
+    return [];
+}
+
+
 /**
  * Merges base JSON and override JSON, optionally including new icons.
  * @param {string} baseJsonPath - Path to base JSON file.
@@ -35,26 +111,24 @@ async function prepareJson(baseJsonPath, sourceJsonPath, options = {}) {
             console.error(error);
         }
 
-        // Merge data
+        // Determine which icon names to process
+        const baseIconNames = Object.keys(baseData);
+        const sourceIconNames = Object.keys(sourceData);
+        const iconNames = addSource ? [...new Set([...baseIconNames, ...sourceIconNames])] : baseIconNames;
+
+        // Merge data for each icon
         const merged = {};
-        if (addSource) {
-            // Merge all icons, preserving fields from base and overriding with override
-            const allIconNames = [...new Set([...Object.keys(baseData), ...Object.keys(sourceData)])];
-            for (const iconName of allIconNames) {
-                merged[iconName] = {
-                    ...(baseData[iconName] || {}),
-                    ...(sourceData[iconName] || {})
-                };
+        for (const iconName of iconNames) {
+            const mergedIcon = _mergeIconData(baseData, sourceData, iconName);
+            if (Array.isArray(mergedIcon) && mergedIcon.length !== 0) {
+                merged[iconName] = mergedIcon;
             }
-        } else {
-            // Only update existing icons
-            for (const iconName of Object.keys(baseData)) {
-                merged[iconName] = {
-                    ...baseData[iconName],
-                    ...(sourceData[iconName] || {})
-                };
+            else {
+                console.warn(`  WARN: No source data for icon "${iconName}".`);
             }
+
         }
+
         return merged;
     } catch (error) {
         console.error('Error merging JSON:', error);
@@ -77,24 +151,33 @@ async function generateCssContent(mergedData) {
         const iconRules = iconNames
             .map(iconName => {
                 const iconData = mergedData[iconName];
-                if (iconData === null) {
+                if (!Array.isArray(iconData) || iconData.length === 0) {
                     return '';
                 }
+
                 const rules = [];
-                if (iconData.pathBefore) {
-                    let beforeRule = `.pi-${iconName}::before { content: ''; clip-path: path("${iconData.pathBefore}"); }`;
-                    if (iconData.colorBefore) {
-                        beforeRule = `.pi-${iconName}::before { content: ''; clip-path: path("${iconData.pathBefore}"); background-color: ${iconData.colorBefore}; }`;
-                    }
+
+                const firstItem = _toPathObject(iconData[0]);
+                if (firstItem.d) {
+                    const beforeRule = firstItem.fill
+                        ? `.pi-${iconName}::before { content: ''; clip-path: path("${firstItem.d}"); background-color: ${firstItem.fill}; }`
+                        : `.pi-${iconName}::before { content: ''; clip-path: path("${firstItem.d}"); }`;
                     rules.push(beforeRule);
                 }
-                if (iconData.pathAfter) {
-                    let afterRule = `.pi-${iconName}::after { content: ''; clip-path: path("${iconData.pathAfter}"); }`;
-                    if (iconData.colorAfter) {
-                        afterRule = `.pi-${iconName}::after { content: ''; clip-path: path("${iconData.pathAfter}"); background-color: ${iconData.colorAfter}; }`;
+
+                if (iconData.length > 1) {
+                    const secondItem = _toPathObject(iconData[1]);
+                    if (secondItem.d) {
+                        const pathAfter = iconData.slice(1)
+                            .map(item => _toPathObject(item).d)
+                            .join(' ');
+                        const afterRule = secondItem.fill
+                            ? `.pi-${iconName}::after { content: ''; clip-path: path("${pathAfter}"); background-color: ${secondItem.fill}; }`
+                            : `.pi-${iconName}::after { content: ''; clip-path: path("${pathAfter}"); }`;
+                        rules.push(afterRule);
                     }
-                    rules.push(afterRule);
                 }
+
                 return rules.join('\n').trim();
             })
             .filter(Boolean)
@@ -142,10 +225,10 @@ async function createHtml(mergedData, outputHtmlPath) {
     try {
         // Extract icon data with names and headers
         const iconsData = Object.entries(mergedData)
-            .filter(([name, data]) => data !== null)
+            .filter(([name, data]) => Array.isArray(data) && data.length !== 0)
             .map(([name, data]) => ({
                 name,
-                header: data.header || name
+                header: data[0].header || name
             }));
 
         // Load HTML template
@@ -192,11 +275,12 @@ async function createCSharp(mergedData, outputCsharpPath, options = {}) {
         // Load C# template
         const csharpTemplate = await fs.readFile(join(__dirname, 'csharp.mustache'), 'utf8');
 
-        // Process icon data
+        // Process icon data for C# enum
         const iconDefinitions = Object.keys(mergedData)
-            .filter(iconName => mergedData[iconName] !== null)
+            .filter(iconName => Array.isArray(mergedData[iconName]) && mergedData[iconName].length > 0)
             .map(iconName => {
-                const iconData = mergedData[iconName];
+                const iconDataArray = mergedData[iconName];
+                // Convert icon name to PascalCase for C# enum member
                 const pascalCaseName = iconName
                     .split('-')
                     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -205,36 +289,32 @@ async function createCSharp(mergedData, outputCsharpPath, options = {}) {
                 // Prepare attributes for SymbolPath
                 const attributes = [];
 
-                // Handle pathBefore
-                if (iconData.pathBefore) {
-                    let colorValue = '0';
-                    if (iconData.colorBefore) {
-                        if (iconData.colorBefore.startsWith('#')) {
-                            // Convert HEX to ARGB (add 0xff for full opacity)
-                            colorValue = `0xff${iconData.colorBefore.slice(1).toLowerCase()}`;
-                        } else {
-                            // Use KnownColor for named colors
-                            colorValue = `KnownColor.${iconData.colorBefore}`;
-                        }
-                    }
-                    attributes.push(`[${attrName}("${iconData.pathBefore}", ${colorValue})]`);
-                }
+                // Iterate through each path/color item in the array to create SymbolPath attributes
+                for (const item of iconDataArray) {
+                    const pathItem = _toPathObject(item);
+                    const path = pathItem.d;
+                    const color = pathItem.fill;
 
-                // Handle pathAfter
-                if (iconData.pathAfter) {
-                    let colorValue = '0';
-                    if (iconData.colorAfter) {
-                        if (iconData.colorAfter.startsWith('#')) {
-                            colorValue = `0xff${iconData.colorAfter.slice(1).toLowerCase()}`;
-                        } else {
-                            colorValue = `KnownColor.${iconData.colorAfter}`;
+                    if (path) {
+                        if (color) {
+                            let colorValue = '0';
+                            if (color.startsWith('#')) {
+                                // Convert HEX to ARGB (add 0xff for full opacity)
+                                colorValue = `0xff${color.slice(1).toLowerCase()}`;
+                            } else {
+                                // Use KnownColor for named colors (requires System.Drawing)
+                                colorValue = `KnownColor.${color}`;
+                            }
+                            attributes.push(`[${attrName}("${path}", ${colorValue})]`);
+                        }
+                        else {
+                            attributes.push(`[${attrName}("${path}")]`);
                         }
                     }
-                    attributes.push(`[${attrName}("${iconData.pathAfter}", ${colorValue})]`);
                 }
 
                 return {
-                    comment: iconData.header ? `${iconData.header}, ${iconName}` : iconName,
+                    comment: iconName,
                     name: pascalCaseName,
                     attributes: attributes.join('\n    ')
                 };
