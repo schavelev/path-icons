@@ -27,8 +27,8 @@ async function loadConfig(configPath, inputArg) {
             if (inputArg) {
                 return {
                     outDir: 'dist',
-                    css: true,
-                    html: true
+                    html: true,
+                    csharp: true
                 };
             }
             return {}; // File not found, return empty config
