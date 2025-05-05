@@ -33,5 +33,5 @@ jobs:
 
       - name: Verify output
         run: |
-          ls examples/app-icons/dist/app-icons.css
+          ls examples/app-icons/dist/BootstrapSymbol.cs
           ls examples/app-icons/dist/app-icons.html
