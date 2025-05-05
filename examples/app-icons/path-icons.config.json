@@ -3,7 +3,7 @@
   "input": "app-icons.json",
   "outDir": "dist",
   "json": false,
-  "css": true,
+  "css": false,
   "html": true,
-  "csharp": false
+  "csharp": true
 }
