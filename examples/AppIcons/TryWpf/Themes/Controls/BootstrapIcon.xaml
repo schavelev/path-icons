@@ -3,17 +3,17 @@
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
                     xmlns:ui="clr-namespace:TryWpf.Controls">
 
-    <!--Размер айконки по-умолчанию-->
-    <sys:Double x:Key="IconElementSize">16</sys:Double>
+    <!-- Defines the default size for BootstrapIcon controls (20x20 pixels). -->
+    <sys:Double x:Key="BootstrapIconSize">20</sys:Double>
 
-    <!--Аналог PathIcon из Avalonia-->
+    <!-- Analog of BootstrapIcon from Avalonia-->
     <Style TargetType="ui:BootstrapIcon">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="PrimaryForeground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="SecondaryForeground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-        <Setter Property="Height" Value="{DynamicResource IconElementSize}" />
-        <Setter Property="Width" Value="{DynamicResource IconElementSize}" />
+        <Setter Property="Height" Value="{DynamicResource BootstrapIconSize}" />
+        <Setter Property="Width" Value="{DynamicResource BootstrapIconSize}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ui:BootstrapIcon">
@@ -22,11 +22,11 @@
                                  Stretch="Uniform">
                             <Grid x:Name="InnerGrid">
                                 <Path Width="16" Height="16"
-								      Stretch="None"
+                                      Stretch="None"
                                       Fill="{TemplateBinding PrimaryForeground}"
                                       Data="{TemplateBinding PrimaryGeometry}" />
                                 <Path Width="16" Height="16"
-								      Stretch="None"
+                                      Stretch="None"
                                       Fill="{TemplateBinding SecondaryForeground}"
                                       Data="{TemplateBinding SecondaryGeometry}" />
                             </Grid>
@@ -38,7 +38,6 @@
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
-
             </Setter.Value>
         </Setter>
     </Style>

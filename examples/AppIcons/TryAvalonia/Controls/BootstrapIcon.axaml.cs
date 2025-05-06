@@ -9,7 +9,7 @@ namespace TryAvalonia;
 /// <summary>
 /// A custom Avalonia control for rendering Bootstrap icons with primary and secondary geometries and colors.
 /// </summary>
-public class BootstrapIcon : IconElement // PathIcon
+public class BootstrapIcon : IconElement
 {
     // A cache to store parsed symbol data for each BootstrapSymbol to improve performance.
     private static readonly Dictionary<BootstrapSymbol, SymbolParsed> _symbolDataCache = [];
@@ -34,14 +34,6 @@ public class BootstrapIcon : IconElement // PathIcon
         ApplySymbolData(pathData);
     }
 
-
-    public static readonly StyledProperty<Geometry?> DataProperty =
-        AvaloniaProperty.Register<BootstrapIcon, Geometry?>(nameof(Data));
-    public Geometry? Data
-    {
-        get => GetValue(DataProperty);
-        set => SetValue(DataProperty, value);
-    }
     #region // Properties
     public static readonly StyledProperty<BootstrapSymbol> SymbolProperty =
         AvaloniaProperty.Register<BootstrapIcon, BootstrapSymbol>(nameof(Symbol), BootstrapSymbol.None);

@@ -7,77 +7,34 @@ namespace TryWpf.Controls;
 
 public class BootstrapIcon : Control
 {
-    private static readonly Dictionary<BootstrapSymbol, SymbolParsed> _symbolParsedDict = [];
+    private static readonly Dictionary<BootstrapSymbol, SymbolParsed> _symbolDataCache = [];
 
     static BootstrapIcon()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(BootstrapIcon), new FrameworkPropertyMetadata(typeof(BootstrapIcon)));
     }
 
-    private static void OnBootstrapSymbolChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnSymbolChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is BootstrapIcon icon && e.NewValue is BootstrapSymbol symb)
         {
-            if (_symbolParsedDict.TryGetValue(symb, out var pathData))
+            if (_symbolDataCache.TryGetValue(symb, out var pathData))
             {
                 ApplySymbolData(icon, pathData);
             }
             else
             {
-                pathData = ConvertToSymbolParsed(symb);
-                _symbolParsedDict.Add(symb, pathData);
+                pathData = CreateSymbolParsed(symb);
+                _symbolDataCache.Add(symb, pathData);
                 ApplySymbolData(icon, pathData);
             }
-        }
-    }
-
-    static SymbolParsed ConvertToSymbolParsed(BootstrapSymbol symb)
-    {
-        try
-        {
-            var (primaryPath, primaryArgb, secondaryPath, secondaryArgb) = symb.GetGeometryDefinition();
-
-            Geometry? primaryGeo = Geometry.Parse(primaryPath ?? "");
-            Brush? primaryBrush = GetBrushFromArgb(primaryArgb);
-            Geometry? secondaryGeo = Geometry.Parse(secondaryPath ?? ""); ;
-            Brush? secondaryBrush = GetBrushFromArgb(secondaryArgb);
-
-            return new SymbolParsed(primaryGeo, primaryBrush, secondaryGeo, secondaryBrush);
-        }
-        catch
-        {
-            return SymbolParsed.Empty;
-        }
-    }
-
-    private static void ApplySymbolData(BootstrapIcon icon, SymbolParsed data)
-    {
-        icon.PrimaryGeometry = data.PrimaryGeometry;
-        icon.SecondaryGeometry = data.SecondaryGeometry;
-
-        if (data.PrimaryForeground != null)
-        {
-            icon.PrimaryForeground = data.PrimaryForeground;
-        }
-        else
-        {
-            icon.ClearValue(PrimaryForegroundProperty);
-        }
-
-        if (data.SecondaryForeground != null)
-        {
-            icon.SecondaryForeground = data.SecondaryForeground;
-        }
-        else
-        {
-            icon.ClearValue(SecondaryForegroundProperty);
         }
     }
 
     #region // Properties
     public static readonly DependencyProperty SymbolProperty
         = DependencyProperty.Register(nameof(Symbol), typeof(BootstrapSymbol), typeof(BootstrapIcon),
-            new PropertyMetadata(default(BootstrapSymbol), OnBootstrapSymbolChanged));
+            new PropertyMetadata(default(BootstrapSymbol), OnSymbolChanged));
     public BootstrapSymbol Symbol
     {
         get => (BootstrapSymbol)GetValue(SymbolProperty);
@@ -117,7 +74,7 @@ public class BootstrapIcon : Control
     }
     #endregion
 
-    private static Brush? GetBrushFromArgb(uint ardb)
+    private static Brush? CreateBrushFromArgb(uint ardb)
     {
         if (ardb == 0)
             return null;
@@ -132,13 +89,54 @@ public class BootstrapIcon : Control
         return brush;
     }
 
+    static SymbolParsed CreateSymbolParsed(BootstrapSymbol symb)
+    {
+        try
+        {
+            var (primaryPath, primaryArgb, secondaryPath, secondaryArgb) = symb.GetGeometryDefinition();
+
+            Geometry? primaryGeo = Geometry.Parse(primaryPath ?? "");
+            Brush? primaryBrush = CreateBrushFromArgb(primaryArgb);
+            Geometry? secondaryGeo = Geometry.Parse(secondaryPath ?? ""); ;
+            Brush? secondaryBrush = CreateBrushFromArgb(secondaryArgb);
+
+            return new SymbolParsed(primaryGeo, primaryBrush, secondaryGeo, secondaryBrush);
+        }
+        catch
+        {
+            return SymbolParsed.Empty;
+        }
+    }
+
+    private static void ApplySymbolData(BootstrapIcon icon, SymbolParsed data)
+    {
+        icon.PrimaryGeometry = data.PrimaryGeometry;
+        icon.SecondaryGeometry = data.SecondaryGeometry;
+
+        if (data.PrimaryForeground != null)
+        {
+            icon.PrimaryForeground = data.PrimaryForeground;
+        }
+        else
+        {
+            icon.ClearValue(PrimaryForegroundProperty);
+        }
+
+        if (data.SecondaryForeground != null)
+        {
+            icon.SecondaryForeground = data.SecondaryForeground;
+        }
+        else
+        {
+            icon.ClearValue(SecondaryForegroundProperty);
+        }
+    }
+
     private readonly struct SymbolParsed
     {
         public Geometry? PrimaryGeometry { get; }
         public Brush? PrimaryForeground { get; }
-
         public Geometry? SecondaryGeometry { get; }
-
         public Brush? SecondaryForeground { get; }
 
         public SymbolParsed(Geometry? primaryGeo, Brush? primaryBrush, Geometry? secondaryGeo, Brush? secondaryBrush)
