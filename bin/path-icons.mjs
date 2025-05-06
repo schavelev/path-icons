@@ -28,6 +28,7 @@ async function loadConfig(configPath, inputArg) {
                 return {
                     outDir: 'dist',
                     html: true,
+                    css: true,
                     csharp: true
                 };
             }
