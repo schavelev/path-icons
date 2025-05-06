@@ -9,17 +9,17 @@ const CSS_TEMPLATE_FILE = join(__dirname, 'base.css.mustache');
 const HTML_TEMPLATE_FILE = join(__dirname, 'preview.html.mustache');
 
 
-// Converts a path item (string or object) into a standard path object { d?, fill? }.
-function _toPathObject(item = {}) {
+// Helper function to convert 'string value' to object { d: 'string value' }
+function _toPathObject(item) {
     if (typeof item === 'string') return { d: item };
-    const { d, fill } = item;
-    return { d, fill };
+    return typeof item === 'object' ? item || {} : {};
 }
 
-// Converts a path object { d?, fill? } back into string or object based on fill presence.
+// Helper function to convert object { d: 'string value' } without `fill` to 'string value'.
 function _fromPathObject(item = {}) {
+    if (typeof item !== 'object') return null;
     const { d, fill } = item;
-    return fill && d ? { d, fill } : typeof d === 'string' ? d : null;
+    return typeof d === 'string' && d && !fill ? d : item;
 }
 
 // Merges data for a single icon
@@ -31,31 +31,38 @@ function _mergeIconData(baseData, sourceData, iconName) {
     if (!baseIconData) {
         return Array.isArray(sourceIconData) ? sourceIconData : [];
     }
-    // If base data is already in the new array format, use it directly (base has priority)
+
+    // If base data is already in the new array format
     if (Array.isArray(baseIconData)) {
-        return baseIconData;
-    }
-    // If base data is string, use it as color
-    if (typeof baseIconData === 'string' && Array.isArray(sourceIconData)) {
-        if (sourceIconData.length > 0) {
-            const item = _toPathObject(sourceIconData[0]);
-            item.fill = baseIconData;
-            sourceIconData[0] = item;
-        } 
-        if (sourceIconData.length > 1) {
-            const item = _toPathObject(sourceIconData[1]);
-            item.fill = baseIconData;
-            sourceIconData[1] = item;
+        // Check if base array contains any path ('d') after conversion.
+        const baseHasPath = baseIconData.some(item => _toPathObject(item).d);
+        // If base has any path OR source is not array, return base data directly.
+        if (baseHasPath || !Array.isArray(sourceIconData)) {
+            return baseIconData;
         }
+
+        // Get base fills (up to 2)
+        const baseFill0 = baseIconData.length > 0 ? _toPathObject(baseIconData[0]).fill : undefined;
+        const baseFill1 = baseIconData.length > 1 ? _toPathObject(baseIconData[1]).fill : undefined;
+        // Apply base fill to source[0]
+        if (typeof baseFill0 === 'string' && baseFill0 && sourceIconData.length > 0) {
+            sourceIconData[0] = Object.assign(_toPathObject(sourceIconData[0]), { fill: baseFill0 });
+        }
+        // Apply base fill to source[1]
+        if (typeof baseFill1 === 'string' && baseFill1 && sourceIconData.length > 1) {
+            sourceIconData[1] = Object.assign(_toPathObject(sourceIconData[1]), { fill: baseFill1 });
+        }
+
+        // Return the modified sourceIconData array
         return sourceIconData;
     }
 
     // LEGACY format
-    if (baseIconData && typeof baseIconData === 'object' && !Array.isArray(baseIconData)) {
+    if (baseIconData && typeof baseIconData === 'object' && !Array.isArray(baseIconData) && Array.isArray(sourceIconData)) {
         const newFormatArray = [];
         // Handle pathBefore/colorBefore, using source's first element as fallback
         if (baseIconData.pathBefore || baseIconData.colorBefore) {
-            const srcItem = Array.isArray(sourceIconData) && sourceIconData.length > 0 ? _toPathObject(sourceIconData[0]) : {};
+            const srcItem = sourceIconData.length > 0 ? _toPathObject(sourceIconData[0]) : {};
             const baseItem = {
                 d: baseIconData.pathBefore || srcItem.d,
                 fill: baseIconData.colorBefore || srcItem.fill
@@ -66,7 +73,7 @@ function _mergeIconData(baseData, sourceData, iconName) {
         }
         // Handle pathAfter/colorAfter, using source's second element as fallback
         if (baseIconData.pathAfter || baseIconData.colorAfter) {
-            const srcItem = Array.isArray(sourceIconData) && sourceIconData.length > 1 ? _toPathObject(sourceIconData[1]) : {};
+            const srcItem = sourceIconData.length > 1 ? _toPathObject(sourceIconData[1]) : {};
             const baseItem = {
                 d: baseIconData.pathAfter|| srcItem.d,
                 fill: baseIconData.colorAfter || srcItem.fill
@@ -79,8 +86,8 @@ function _mergeIconData(baseData, sourceData, iconName) {
         return newFormatArray;
     }
 
-    // If neither source nor base has valid data in expected formats, return empty array
-    return [];
+    // If neither source nor base has valid data in expected formats, return null
+    return null;
 }
 
 
