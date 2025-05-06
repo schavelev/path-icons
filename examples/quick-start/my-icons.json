@@ -1,10 +1,16 @@
 {
-  "sign-stop-fill": [{"fill": "#dc3545"}, {"fill": "#dc3545"}],
-  "exclamation-triangle-fill": [{"fill": "#ffc107"}, {"fill": "#ffc107"}],
-  "info-circle": [{"fill": "#0dcaf0"}, {"fill": "#0dcaf0"}], 
-  "graph-up-arrow": [{"fill": "#0d6efd"}, {"fill": "#0d6efd"}],
-  "file-earmark-arrow-down": [{"fill": "#0d6efd"}, {"fill": "Green"}],
-  "file-earmark-arrow-up": [{"fill": "Gold"}, {"fill": "Green"}],
-  "file-earmark-spreadsheet": [{"fill": "Green"}, {"fill": "Green"}],
-  "gear": null
+  "sign-stop-fill": [{"fill": "Crimson"}, {"fill": "Crimson"}],
+  "exclamation-triangle-fill": [{"fill": "Orange"}, {"fill": "Orange"}],
+  "info-circle": [{"fill": "#0dcaf0"}, {"fill": "#0dcaf0"}],
+  "database": [{"fill": "#7c3aed"}, {"fill": "#7c3aed"}], 
+  "database-check": [{"fill": "#198754"}, {"fill": "#7c3aed"}], 
+  "database-exclamation": [{"fill": "#7c3aed"}, {"fill": "#ffc107"}], 
+  "database-dash": [{"fill": "#dc3545"}, {"fill": "#7c3aed"}], 
+  "floppy": null,
+  "gear": null,
+  "custom1": [ {"d": "M3,3 8,6 13,3 10,8 13,13 8,10 3,13 6,8z", "fill": "Red"} ],
+  "custom2": [
+    { "d": "M0,0H16V16H0z", "fill": "Green" },
+    { "d": "M3,5 5,3 8,6 11,3 13,5 10,8 13,11 11,13 8,10 5,13 3,11 6,8z", "fill": "Red" }
+  ]
 }
