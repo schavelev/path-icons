@@ -11,6 +11,7 @@
   "sign-stop-fill": [{"fill": "#dc3545"}, {"fill": "#dc3545"}],
   "exclamation-triangle-fill": [{"fill": "#ffc107"}, {"fill": "#ffc107"}],
   "info-circle": [{"fill": "#0dcaf0"}, {"fill": "#0dcaf0"}], 
+  "floppy": null,
   "gear": null,
   "custom1": [
     {
