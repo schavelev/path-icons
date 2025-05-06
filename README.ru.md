@@ -11,17 +11,19 @@
 
 ![Логотипы](logos.svg)
 
-**Path Icons** — инструмент для генерации векторных иконок на основе SVG-путей из [Bootstrap Icons](https://icons.getbootstrap.com/).
-Он создаёт CSS-файлы для веб-приложений и C#-файлы для приложений на Avalonia и WPF, 
-позволяет использовать только необходимые иконки, упрощает создание пользовательских иконок, поддерживает настройку цвета для отдельных фрагментов изображения (`path`).
+**Path Icons** — инструмент для генерации определений двухцветных векторных айконок на основе SVG-путей из [Bootstrap Icons](https://icons.getbootstrap.com/).
+Он создаёт CSS-файлы для веб-приложений и C#-файлы для приложений на Avalonia/WPF, 
+позволяет использовать только необходимые айконки, упрощает включение в приложение пользовательских айконок.
+
+Пример генерации определений айконок в форме HTML-файла для предварительного просмотра доступен по [ссылке](https://schavelev.github.io/path-icons/examples/quick-start/my-icons.html).
 
 ## Почему Path Icons?
 
-- **Готовые иконки**: Используйте обширную коллекцию [Bootstrap Icons](https://icons.getbootstrap.com/), не создавая иконки с нуля.
-- **Цветные иконки**: Преобразуйте монохромные Bootstrap Icons в цветные, задав до двух цветов для фрагментов (`path`).
-- **Компактность**: Оптимизируйте проект, включая вместо полного набора из 2000+ только необходимые иконки.
-- **Пользовательские иконки**: Быстро создавайте собственные иконки, указав имя и 1-2 фрагмента избражения (`path`).
-- **Кроссплатформенность**: Используйте Bootstrap Icons не только для веб-приложений, но и в приложениях на Avalonia и WPF.
+- **Готовые айконки**: Используйте обширную коллекцию [Bootstrap Icons](https://icons.getbootstrap.com/), не создавая айконки с нуля.
+- **Цветные айконки**: Преобразуйте монохромные Bootstrap Icons в цветные, задав до двух цветов для фрагментов изображения (`path`).
+- **Компактность**: Оптимизируйте проект, включая вместо полного набора из 2000+ только необходимые айконки.
+- **Пользовательские айконки**: Быстро создавайте собственные айконки, указав имя и 1-2 фрагмента избражения (`path`).
+- **Кроссплатформенность**: Используйте Bootstrap Icons не только для веб-приложений, но и в приложениях на Avalonia/WPF.
 
 ## Установка
 
@@ -42,19 +44,26 @@ npm install path-icons --save-dev
 2. **Создайте файл `my-icons.json`**:
    ```json
    {
-    "sign-stop-fill": null,
-    "x-octagon-fill": { "colorBefore": "#dc3545" },
-    "exclamation-triangle-fill": { "colorBefore": "#ffc107" },
-    "file-earmark-arrow-down": { "colorBefore": "#0d6efd", "colorAfter": "Green" },
-    "file-earmark-arrow-up": { "colorBefore": "Gold", "colorAfter": "Green" },
-    "custom1": { "pathBefore": "M3,3 8,6 13,3 10,8 13,13 8,10 3,13 6,8z", "colorBefore": "Red" },
-    "custom2": { "pathBefore": "M0,0H16V16H0z", "colorBefore": "Green", "pathAfter": "M5,3 13,11 11,13 3,5z M13,5 5,13 3,11 11,3z", "colorAfter": "Red" }
+     "sign-stop-fill": [{"fill": "Crimson"}, {"fill": "Crimson"}],
+     "exclamation-triangle-fill": [{"fill": "Orange"}, {"fill": "Orange"}],
+     "info-circle": [{"fill": "#0dcaf0"}, {"fill": "#0dcaf0"}],
+     "database": [{"fill": "#7c3aed"}, {"fill": "#7c3aed"}], 
+     "database-check": [{"fill": "#198754"}, {"fill": "#7c3aed"}], 
+     "database-exclamation": [{"fill": "#7c3aed"}, {"fill": "#ffc107"}], 
+     "database-dash": [{"fill": "#dc3545"}, {"fill": "#7c3aed"}], 
+     "gear": null,
+     "custom1": [ {"d": "M3,3 8,6 13,3 10,8 13,13 8,10 3,13 6,8z", "fill": "Red"} ],
+     "custom2": [
+       { "d": "M0,0H16V16H0z", "fill": "Green" },
+       { "d": "M3,5 5,3 8,6 11,3 13,5 10,8 13,11 11,13 8,10 5,13 3,11 6,8z", "fill": "Red" }
+     ]
    }
    ```
-   В файле указаны иконки, которые берутся из Bootstrap Icons: без изменений (sign-stop-fill),
-   с определением одного цвета (x-octagon-fill, exclamation-triangle-fill), с определением двух цветов для фрагментов изображения (file-earmark-arrow-down, file-earmark-arrow-up).
-   Также приведены определения пользовательских иконок (custom1, custom2).
+   В файле перечислены айконки, которые берутся из Bootstrap Icons: с указанием двух одинаковых цветов для фрагментов изображения (sign-stop-fill, exclamation-triangle-fill, info-circle, database), с определением двух разных цветов (database-check, database-exclamation, database-dash), без определения цвета (floppy, gear).
    
+   Дополнительно приведены определения пользовательских иконок (custom1, custom2).
+
+
 
 3. **Запустите генератор:**:
    ```bash
@@ -63,7 +72,7 @@ npm install path-icons --save-dev
 
 4. **Ознакомьтесь с результатами**:
 
-   Сгенерированные файлы находятся в директории `dist`. Откройте `dist/app-icons.html` в браузере для предварительного просмотра иконок.
+   Сгенерированные файлы находятся в директории `dist` (html, css, cs). Откройте `dist/app-icons.html` в браузере для предварительного просмотра айконок.
    Пример результата также доступен по [ссылке](https://schavelev.github.io/path-icons/examples/quick-start/my-icons.html).
 
 ## Примеры
@@ -88,37 +97,39 @@ cd examples/app-icons
 npx path-icons --verbose
 ```
 Результат: сгенерированы файлы `dist/app-icons.css` и `dist/app-icons.html`.  
-Откройте `dist/app-icons.html` в браузере для просмотра иконок.
+Откройте `dist/app-icons.html` в браузере для просмотра айконок.
 
-### Пример `AppIcons/SharedLib`
-Генерация C#-файла с определениями иконок для приложений Avalonia и WPF.  
+### Пример `AppIcons`
+
+#### Проект `AppIcons/SharedLib`
+Генерация C#-файла с определениями айконок для приложений Avalonia/WPF.  
 Файл конфигурации `path-icons.config.json` задаёт входной файл `shared-lib-icons.json` и выходные файлы (`css`, `html`, `csharp`).
 Из корня проекта выполните:
 ```bash
 cd examples/AppIcons/SharedLib
 npx path-icons --verbose
 ```
-Результат: сгенерированы файлы `Bootstrap/BootstrapSymbol.cs`, `dist/shared-lib-icons.css` и `dist/shared-lib-icons.html` (последний удобен для проверки набора иконок).
+Результат: сгенерированы файлы `Bootstrap/BootstrapSymbol.cs`, `dist/shared-lib-icons.css` и `dist/shared-lib-icons.html` (последний удобен для проверки набора айконок).
 
-### Пример `AppIcons/TryAvalonia`
-Пример использования иконок из `AppIcons/SharedLib` в приложении Avalonia.
+#### Проект `AppIcons/TryAvalonia`
+Пример использования айконок из `AppIcons/SharedLib` в приложении Avalonia.
 Из корня проекта выполните:
 ```bash
 cd examples/AppIcons/TryAvalonia
 dotnet build
 dotnet run
 ```
-Результат: запускается десктоп-приложение с двумя панелями кнопок, использующими монохромные и цветные иконки.
+Результат: запускается десктоп-приложение с панелью цветных кнопок (псевдо тулбаром).
 
-### Пример `AppIcons/TryWpf`
-Пример использования иконок из `AppIcons/SharedLib` в приложении WPF.
+#### Проект `AppIcons/TryWpf`
+Пример использования айконок из `AppIcons/SharedLib` в приложении WPF.
 Из корня проекта выполните:
 ```bash
 cd examples/AppIcons/TryWpf
 dotnet build
 dotnet run
 ```
-Результат: запускается десктоп-приложение с панелью инструментов (ToolBar), содержащей кнопки с иконками.
+Результат: запускается десктоп-приложение с панелью цветных кнопок (ToolBar).
 
 ## Лицензия
 
@@ -126,4 +137,4 @@ dotnet run
 
 ## Благодарности
 
-Этот проект включает SVG данные иконок из [Bootstrap Icons](https://github.com/twbs/icons), распространяемые под лицензией MIT. Copyright (c) 2019-2024 The Bootstrap Authors. 
+Этот проект включает SVG данные айконок из [Bootstrap Icons](https://github.com/twbs/icons), распространяемые под лицензией MIT. Copyright (c) 2019-2025 The Bootstrap Authors. 
