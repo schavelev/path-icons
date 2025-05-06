@@ -108,7 +108,7 @@ npx path-icons --verbose
 Result: The `dist/app-icons.css` and `dist/app-icons.html` files are generated.
 Open `dist/app-icons.html` in your browser to view the icons.
 
-### Example `AppIcons/SharedLib`
+### Example `AppIcons`
 
 #### Project `AppIcons/SharedLib`
 
@@ -122,7 +122,7 @@ npx path-icons --verbose
 ```
 Result: The `Bootstrap/BootstrapSymbol.cs`, `dist/shared-lib-icons.css`, and `dist/shared-lib-icons.html` files are generated (the latter is useful for checking the icon set).
 
-### Project `AppIcons/TryAvalonia`
+#### Project `AppIcons/TryAvalonia`
 
 An example of using icons from `AppIcons/SharedLib` in an Avalonia application.
 From the project root, run:
@@ -134,7 +134,7 @@ dotnet run
 ```
 Result: A desktop application with a panel of colored buttons (a pseudo-toolbar) starts.
 
-### Project `AppIcons/TryWpf`
+#### Project `AppIcons/TryWpf`
 
 An example of using icons from `AppIcons/SharedLib` in a WPF application.
 From the project root, run:
