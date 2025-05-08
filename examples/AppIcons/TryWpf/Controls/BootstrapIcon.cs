@@ -5,36 +5,43 @@ using SharedLib.Bootstrap;
 
 namespace TryWpf.Controls;
 
+/// <summary>
+/// A custom Avalonia control for rendering Bootstrap icons with primary and secondary geometries and colors.
+/// </summary>
 public class BootstrapIcon : Control
 {
+    // A cache to store parsed symbol data for each BootstrapSymbol to improve performance.
     private static readonly Dictionary<BootstrapSymbol, SymbolParsed> _symbolDataCache = [];
 
+    // Static constructor
     static BootstrapIcon()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(BootstrapIcon), new FrameworkPropertyMetadata(typeof(BootstrapIcon)));
+        SymbolProperty = DependencyProperty.Register(nameof(Symbol), typeof(BootstrapSymbol), typeof(BootstrapIcon),
+            new FrameworkPropertyMetadata(
+                BootstrapSymbol.None,
+                FrameworkPropertyMetadataOptions.AffectsRender,
+                OnSymbolChanged));
     }
 
+    // Handles changes to the Symbol property, updating the control's geometries and colors.
     private static void OnSymbolChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is BootstrapIcon icon && e.NewValue is BootstrapSymbol symb)
         {
-            if (_symbolDataCache.TryGetValue(symb, out var pathData))
+            if (!_symbolDataCache.TryGetValue(symb, out var pathData))
             {
-                ApplySymbolData(icon, pathData);
-            }
-            else
-            {
+                // Parse and cache new symbol data
                 pathData = CreateSymbolParsed(symb);
                 _symbolDataCache.Add(symb, pathData);
-                ApplySymbolData(icon, pathData);
             }
+            icon.ApplySymbolData(pathData);
         }
     }
 
     #region // Properties
-    public static readonly DependencyProperty SymbolProperty
-        = DependencyProperty.Register(nameof(Symbol), typeof(BootstrapSymbol), typeof(BootstrapIcon),
-            new PropertyMetadata(default(BootstrapSymbol), OnSymbolChanged));
+    public static readonly DependencyProperty SymbolProperty;
+        //= DependencyProperty.Register(nameof(Symbol), typeof(BootstrapSymbol), typeof(BootstrapIcon), new PropertyMetadata());
     public BootstrapSymbol Symbol
     {
         get => (BootstrapSymbol)GetValue(SymbolProperty);
@@ -74,6 +81,7 @@ public class BootstrapIcon : Control
     }
     #endregion
 
+    // Converts an ARGB uint value into a SolidColorBrush, or null if the value is 0.
     private static Brush? CreateBrushFromArgb(uint ardb)
     {
         if (ardb == 0)
@@ -82,56 +90,62 @@ public class BootstrapIcon : Control
         var sysColor = System.Drawing.Color.FromArgb(unchecked((int)ardb));
         var brush = new SolidColorBrush(Color.FromArgb(sysColor.A, sysColor.R, sysColor.G, sysColor.B));
 
-        // заморозить кисть, если она не будет изменяться
         if (brush.CanFreeze)
             brush.Freeze();
 
         return brush;
     }
 
-    static SymbolParsed CreateSymbolParsed(BootstrapSymbol symb)
+    // Converts a BootstrapSymbol into parsed geometry and brush data for rendering.
+    private static SymbolParsed CreateSymbolParsed(BootstrapSymbol symb)
     {
         try
         {
             var (primaryPath, primaryArgb, secondaryPath, secondaryArgb) = symb.GetGeometryDefinition();
-
             Geometry? primaryGeo = Geometry.Parse(primaryPath ?? "");
             Brush? primaryBrush = CreateBrushFromArgb(primaryArgb);
-            Geometry? secondaryGeo = Geometry.Parse(secondaryPath ?? ""); ;
+            Geometry? secondaryGeo = Geometry.Parse(secondaryPath ?? "");
             Brush? secondaryBrush = CreateBrushFromArgb(secondaryArgb);
 
+            // Return parsed data as a SymbolParsed struct.
             return new SymbolParsed(primaryGeo, primaryBrush, secondaryGeo, secondaryBrush);
         }
         catch
         {
+            // Return empty data if parsing fails.
             return SymbolParsed.Empty;
         }
     }
 
-    private static void ApplySymbolData(BootstrapIcon icon, SymbolParsed data)
+    // Applies parsed symbol data to the control's properties.
+    private void ApplySymbolData(SymbolParsed data)
     {
-        icon.PrimaryGeometry = data.PrimaryGeometry;
-        icon.SecondaryGeometry = data.SecondaryGeometry;
+        // Set primary and secondary geometries.
+        PrimaryGeometry = data.PrimaryGeometry;
+        SecondaryGeometry = data.SecondaryGeometry;
 
+        // Set primary foreground brush if available, otherwise clear the property.
         if (data.PrimaryForeground != null)
         {
-            icon.PrimaryForeground = data.PrimaryForeground;
+            PrimaryForeground = data.PrimaryForeground;
         }
         else
         {
-            icon.ClearValue(PrimaryForegroundProperty);
+            ClearValue(PrimaryForegroundProperty);
         }
 
+        // Set secondary foreground brush if available, otherwise clear the property.
         if (data.SecondaryForeground != null)
         {
-            icon.SecondaryForeground = data.SecondaryForeground;
+            SecondaryForeground = data.SecondaryForeground;
         }
         else
         {
-            icon.ClearValue(SecondaryForegroundProperty);
+            ClearValue(SecondaryForegroundProperty);
         }
     }
 
+    // A struct to hold parsed geometry and brush data for a symbol.
     private readonly struct SymbolParsed
     {
         public Geometry? PrimaryGeometry { get; }
@@ -147,6 +161,7 @@ public class BootstrapIcon : Control
             SecondaryForeground = secondaryBrush;
         }
 
-        public static SymbolParsed Empty => new SymbolParsed(null, null, null, null);
+        // An empty SymbolParsed instance for error cases.
+        public static SymbolParsed Empty => new(null, null, null, null);
     }
 }

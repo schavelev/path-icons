@@ -5,9 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="clr-namespace:TryWpf.Controls"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-        xmlns:local="clr-namespace:TryWpf"
-        mc:Ignorable="d"
-        Title="PathIcons and BootstrapIcons" Height="300" Width="600">
+        mc:Ignorable="d" Height="150" Width="600"
+        Title="TryWpf">
     <Window.Resources>
         <!-- Default size for all BootstrapIcons in this Window. -->
         <sys:Double x:Key="BootstrapIconSize">32</sys:Double>
@@ -22,6 +21,9 @@
                            x:Key="{x:Static ToolBar.ButtonStyleKey}">
                         <Setter Property="MinWidth" Value="50"/>
                         <Setter Property="MinHeight" Value="46"/>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
                     </Style>
                 </ToolBar.Resources>
                 <Button>

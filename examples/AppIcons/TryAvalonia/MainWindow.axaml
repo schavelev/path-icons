@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="using:TryAvalonia"
-        Width="650" Height="300"
+        Width="650" Height="150"
         mc:Ignorable="d"  x:Class="TryAvalonia.MainWindow" Title="TryAvalonia">
     <Window.Resources>
         <x:Double x:Key="BootstrapIconSize">24</x:Double>

@@ -7,7 +7,7 @@
     <sys:Double x:Key="BootstrapIconSize">20</sys:Double>
 
     <!-- Analog of BootstrapIcon from Avalonia-->
-    <Style TargetType="ui:BootstrapIcon">
+    <Style x:Key="{x:Type ui:BootstrapIcon}" TargetType="ui:BootstrapIcon">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="PrimaryForeground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
@@ -18,15 +18,12 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ui:BootstrapIcon">
                     <Border Background="{TemplateBinding Background}">
-                        <Viewbox Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
-                                 Stretch="Uniform">
+                        <Viewbox Stretch="Uniform">
                             <Grid x:Name="InnerGrid">
-                                <Path Width="16" Height="16"
-                                      Stretch="None"
+                                <Path Width="16" Height="16" Stretch="None"
                                       Fill="{TemplateBinding PrimaryForeground}"
                                       Data="{TemplateBinding PrimaryGeometry}" />
-                                <Path Width="16" Height="16"
-                                      Stretch="None"
+                                <Path Width="16" Height="16" Stretch="None"
                                       Fill="{TemplateBinding SecondaryForeground}"
                                       Data="{TemplateBinding SecondaryGeometry}" />
                             </Grid>

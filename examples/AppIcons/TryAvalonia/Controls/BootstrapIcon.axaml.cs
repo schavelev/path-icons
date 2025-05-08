@@ -18,11 +18,11 @@ public class BootstrapIcon : IconElement
     static BootstrapIcon()
     {
         AffectsRender<BootstrapIcon>(SymbolProperty);
-        SymbolProperty.Changed.AddClassHandler<BootstrapIcon>((x, e) => x.OnSymbolChanged(e));
+        SymbolProperty.Changed.AddClassHandler<BootstrapIcon>(OnSymbolChanged);
     }
 
     // Handles changes to the Symbol property, updating the control's geometries and colors.
-    private void OnSymbolChanged(AvaloniaPropertyChangedEventArgs e)
+    private static void OnSymbolChanged(BootstrapIcon icon, AvaloniaPropertyChangedEventArgs e)
     {
         var symb = e.GetNewValue<BootstrapSymbol>();
         if (!_symbolDataCache.TryGetValue(symb, out var pathData))
@@ -31,7 +31,7 @@ public class BootstrapIcon : IconElement
             pathData = CreateSymbolParsed(symb);
             _symbolDataCache.Add(symb, pathData);
         }
-        ApplySymbolData(pathData);
+        icon.ApplySymbolData(pathData);
     }
 
     #region // Properties
@@ -87,9 +87,9 @@ public class BootstrapIcon : IconElement
         {
             var (primaryPath, primaryArgb, secondaryPath, secondaryArgb) = symb.GetGeometryDefinition();
             Geometry? primaryGeo = Geometry.Parse(primaryPath ?? "");
-            IBrush? primaryBrush = CreateBrushFromArgb(primaryArgb);
+            Brush? primaryBrush = CreateBrushFromArgb(primaryArgb);
             Geometry? secondaryGeo = Geometry.Parse(secondaryPath ?? "");
-            IBrush? secondaryBrush = CreateBrushFromArgb(secondaryArgb);
+            Brush? secondaryBrush = CreateBrushFromArgb(secondaryArgb);
 
             // Return parsed data as a SymbolParsed struct.
             return new SymbolParsed(primaryGeo, primaryBrush, secondaryGeo, secondaryBrush);
@@ -133,11 +133,11 @@ public class BootstrapIcon : IconElement
     private readonly struct SymbolParsed
     {
         public Geometry? PrimaryGeometry { get; }
-        public IBrush? PrimaryForeground { get; }
+        public Brush? PrimaryForeground { get; }
         public Geometry? SecondaryGeometry { get; }
-        public IBrush? SecondaryForeground { get; }
+        public Brush? SecondaryForeground { get; }
 
-        public SymbolParsed(Geometry? primaryGeo, IBrush? primaryBrush, Geometry? secondaryGeo, IBrush? secondaryBrush)
+        public SymbolParsed(Geometry? primaryGeo, Brush? primaryBrush, Geometry? secondaryGeo, Brush? secondaryBrush)
         {
             PrimaryGeometry = primaryGeo;
             PrimaryForeground = primaryBrush;
@@ -148,5 +148,4 @@ public class BootstrapIcon : IconElement
         // An empty SymbolParsed instance for error cases.
         public static SymbolParsed Empty => new(null, null, null, null);
     }
-
 }
