@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace SharedLib.Bootstrap;
+namespace SharedLib.Controls;
 
 /// <summary>
 /// Defines a custom attribute to associate SVG path data and fill color with enum fields or properties.

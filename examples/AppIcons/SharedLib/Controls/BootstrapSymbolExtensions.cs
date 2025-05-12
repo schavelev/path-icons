@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SharedLib.Bootstrap;
+namespace SharedLib.Controls;
 
 /// <summary>
 /// Provides extension methods for the BootstrapSymbol enum to extract SVG path and color information.

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SharedLib.Bootstrap;
+using SharedLib.Controls;
 
 namespace TryWpf.Controls;
 

@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using SharedLib.Bootstrap;
+using SharedLib.Controls;
 using System.Collections.Generic;
 
 namespace TryAvalonia;

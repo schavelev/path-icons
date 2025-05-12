@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace SharedLib.Bootstrap;
+namespace SharedLib.Controls;
 
 // Defines an enum for Bootstrap icons, each associated with SVG path data and colors via SymbolPathAttribute.
 public enum BootstrapSymbol
