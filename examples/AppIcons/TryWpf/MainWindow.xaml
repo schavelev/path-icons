@@ -7,86 +7,86 @@
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d" Height="150" Width="600"
         Title="TryWpf">
-    <Window.Resources>
-        <!-- Default size for all BootstrapIcons in this Window. -->
-        <sys:Double x:Key="BootstrapIconSize">32</sys:Double>
-    </Window.Resources>
-    <DockPanel>
-        <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
-            <ToolBar>
-                <ToolBar.Resources>
-                    <!-- Unified button style for ToolBar controls. -->
-                    <Style TargetType="Button"
-                           BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                           x:Key="{x:Static ToolBar.ButtonStyleKey}">
-                        <Setter Property="MinWidth" Value="50"/>
-                        <Setter Property="MinHeight" Value="46"/>
-                    </Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                    </Style>
-                </ToolBar.Resources>
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="WindowSidebar"/>
-                        <TextBlock Text="Sidebar"/>
-                    </StackPanel>
-                </Button>
-                <Separator/>
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="Funnel"/>
-                        <TextBlock Text="Filter"/>
-                    </StackPanel>
-                </Button>
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="SortAlphaDown"/>
-                        <TextBlock Text="Sort"/>
-                    </StackPanel>
-                </Button>
-                <Separator />
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="FileEarmarkArrowDown"/>
-                        <TextBlock Text="Export"/>
-                    </StackPanel>
-                </Button>
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="FileEarmarkArrowUp"/>
-                        <TextBlock Text="Import"/>
-                    </StackPanel>
-                </Button>
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="FileEarmarkSpreadsheet"/>
-                        <TextBlock Text="Excel"/>
-                    </StackPanel>
-                </Button>
-                <Separator />
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="GraphUpArrow"/>
-                        <TextBlock Text="Report"/>
-                    </StackPanel>
-                </Button>
-                <Separator />
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="Custom1"/>
-                        <TextBlock Text="Custom1"/>
-                    </StackPanel>
-                </Button>
-                <Button>
-                    <StackPanel>
-                        <ui:BootstrapIcon Symbol="Custom2"/>
-                        <TextBlock Text="Custom2"/>
-                    </StackPanel>
-                </Button>
-            </ToolBar>
-        </ToolBarTray>
-        <!---->
-        <TextBlock Text="Welcome to Wpf!" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    </DockPanel>
+  <Window.Resources>
+    <!-- Default size for all BootstrapIcons in this Window. -->
+    <sys:Double x:Key="BootstrapIconSize">32</sys:Double>
+  </Window.Resources>
+  <DockPanel>
+    <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
+      <ToolBar>
+        <ToolBar.Resources>
+          <!-- Unified button style for ToolBar controls. -->
+          <Style TargetType="Button"
+                 BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                 x:Key="{x:Static ToolBar.ButtonStyleKey}">
+            <Setter Property="MinWidth" Value="50"/>
+            <Setter Property="MinHeight" Value="46"/>
+          </Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+          </Style>
+        </ToolBar.Resources>
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="WindowSidebar"/>
+            <TextBlock Text="Sidebar"/>
+          </StackPanel>
+        </Button>
+        <Separator/>
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="Funnel"/>
+            <TextBlock Text="Filter"/>
+          </StackPanel>
+        </Button>
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="SortAlphaDown"/>
+            <TextBlock Text="Sort"/>
+          </StackPanel>
+        </Button>
+        <Separator />
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="FileEarmarkArrowDown"/>
+            <TextBlock Text="Export"/>
+          </StackPanel>
+        </Button>
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="FileEarmarkArrowUp"/>
+            <TextBlock Text="Import"/>
+          </StackPanel>
+        </Button>
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="FileEarmarkSpreadsheet"/>
+            <TextBlock Text="Excel"/>
+          </StackPanel>
+        </Button>
+        <Separator />
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="GraphUpArrow"/>
+            <TextBlock Text="Report"/>
+          </StackPanel>
+        </Button>
+        <Separator />
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="Custom1"/>
+            <TextBlock Text="Custom1"/>
+          </StackPanel>
+        </Button>
+        <Button>
+          <StackPanel>
+            <ui:BootstrapIcon Symbol="Custom2"/>
+            <TextBlock Text="Custom2"/>
+          </StackPanel>
+        </Button>
+      </ToolBar>
+    </ToolBarTray>
+    <!---->
+    <TextBlock Text="Welcome to Wpf!" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+  </DockPanel>
 </Window>
