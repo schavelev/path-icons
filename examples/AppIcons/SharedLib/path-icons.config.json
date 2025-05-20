@@ -5,5 +5,5 @@
   "json": false,
   "css": false,
   "html": true,
-  "csharp": "Bootstrap/BootstrapSymbol.cs"
+  "csharp": "Controls/BootstrapSymbol.cs"
 }
