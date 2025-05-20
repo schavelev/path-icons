@@ -2,80 +2,80 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="using:TryAvalonia"
+        xmlns:ui="using:TryAvalonia.Controls"
         Width="650" Height="150"
-        mc:Ignorable="d"  x:Class="TryAvalonia.MainWindow" Title="TryAvalonia">
-    <Window.Resources>
-        <x:Double x:Key="BootstrapIconSize">24</x:Double>
-    </Window.Resources>
-    <Window.Styles>
-        <Style Selector="Button">
-            <Setter Property="Background" Value="#EEF5FD"/>
-            <Setter Property="MinWidth" Value="70"/>
-            <Setter Property="MinHeight" Value="50"/>
-        </Style>
-        <Style Selector="Button > StackPanel > TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
-    </Window.Styles>
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="WindowSidebar" />
-                    <TextBlock Text="Sidebar"/>
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="Funnel" />
-                    <TextBlock Text="Filter" />
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="SortAlphaDown" />
-                    <TextBlock Text="Sort" />
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="FileEarmarkArrowDown" />
-                    <TextBlock Text="Export" />
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="FileEarmarkArrowUp" />
-                    <TextBlock Text="Import" />
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="FileEarmarkSpreadsheet" />
-                    <TextBlock Text="Excel" />
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="GraphUpArrow" />
-                    <TextBlock Text="Report" />
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="Custom1" />
-                    <TextBlock Text="Custom1" />
-                </StackPanel>
-            </Button>
-            <Button>
-                <StackPanel>
-                    <ui:BootstrapIcon Symbol="Custom2" />
-                    <TextBlock Text="Custom2" />
-                </StackPanel>
-            </Button>
+        mc:Ignorable="d" x:Class="TryAvalonia.MainWindow" Title="TryAvalonia">
+  <Window.Resources>
+    <x:Double x:Key="BootstrapIconSize">24</x:Double>
+  </Window.Resources>
+  <Window.Styles>
+    <Style Selector="Button">
+      <Setter Property="Background" Value="#EEF5FD"/>
+      <Setter Property="MinWidth" Value="70"/>
+      <Setter Property="MinHeight" Value="50"/>
+    </Style>
+    <Style Selector="Button > StackPanel > TextBlock">
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+  </Window.Styles>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="WindowSidebar" />
+          <TextBlock Text="Sidebar"/>
         </StackPanel>
-        <!---->
-        <TextBlock Text="Welcome to Avalonia!" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    </DockPanel>
+      </Button>
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="Funnel" />
+          <TextBlock Text="Filter" />
+        </StackPanel>
+      </Button>
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="SortAlphaDown" />
+          <TextBlock Text="Sort" />
+        </StackPanel>
+      </Button>
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="FileEarmarkArrowDown" />
+          <TextBlock Text="Export" />
+        </StackPanel>
+      </Button>
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="FileEarmarkArrowUp" />
+          <TextBlock Text="Import" />
+        </StackPanel>
+      </Button>
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="FileEarmarkSpreadsheet" />
+          <TextBlock Text="Excel" />
+        </StackPanel>
+      </Button>
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="GraphUpArrow" />
+          <TextBlock Text="Report" />
+        </StackPanel>
+      </Button>
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="Custom1" />
+          <TextBlock Text="Custom1" />
+        </StackPanel>
+      </Button>
+      <Button>
+        <StackPanel>
+          <ui:BootstrapIcon Symbol="Custom2" />
+          <TextBlock Text="Custom2" />
+        </StackPanel>
+      </Button>
+    </StackPanel>
+    <!---->
+    <TextBlock Text="Welcome to Avalonia!" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+  </DockPanel>
 </Window>

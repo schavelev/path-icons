@@ -4,7 +4,7 @@ using Avalonia.Media;
 using SharedLib.Controls;
 using System.Collections.Generic;
 
-namespace TryAvalonia;
+namespace TryAvalonia.Controls;
 
 /// <summary>
 /// A custom Avalonia control for rendering Bootstrap icons with primary and secondary geometries and colors.
@@ -75,7 +75,7 @@ public class BootstrapIcon : IconElement
         set => SetValue(SecondaryForegroundProperty, value);
     }
     #endregion
-    
+
     // Converts an ARGB uint value into a SolidColorBrush, or null if the value is 0.
     private static Brush? CreateBrushFromArgb(uint ardb)
         => ardb == 0 ? null : new SolidColorBrush(ardb);
