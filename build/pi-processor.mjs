@@ -323,7 +323,7 @@ async function createCSharp(mergedData, outputCsharpPath, options = {}) {
                 return {
                     comment: iconName,
                     name: pascalCaseName,
-                    attributes: attributes.join('\n    ')
+                    attributes: attributes
                 };
             });
 
