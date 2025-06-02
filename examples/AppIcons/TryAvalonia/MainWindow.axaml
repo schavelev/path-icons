@@ -9,17 +9,21 @@
     <x:Double x:Key="BootstrapIconSize">24</x:Double>
   </Window.Resources>
   <Window.Styles>
-    <Style Selector="Button">
+    <Style Selector="StackPanel.toolbar">
       <Setter Property="Background" Value="#EEF5FD"/>
-      <Setter Property="MinWidth" Value="70"/>
-      <Setter Property="MinHeight" Value="50"/>
     </Style>
-    <Style Selector="Button > StackPanel > TextBlock">
+    <Style Selector="StackPanel.toolbar Button">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="MinWidth" Value="60"/>
+    </Style>
+    <Style Selector="StackPanel.toolbar Button TextBlock">
       <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="FontSize" Value="12"/>
     </Style>
   </Window.Styles>
+
   <DockPanel>
-    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+    <StackPanel DockPanel.Dock="Top" Classes="toolbar" Orientation="Horizontal">
       <Button>
         <StackPanel>
           <ui:BootstrapIcon Symbol="WindowSidebar" />
@@ -75,7 +79,6 @@
         </StackPanel>
       </Button>
     </StackPanel>
-    <!---->
     <TextBlock Text="Welcome to Avalonia!" VerticalAlignment="Center" HorizontalAlignment="Center"/>
   </DockPanel>
 </Window>
