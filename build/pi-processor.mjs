@@ -275,7 +275,7 @@ async function createCSharp(mergedData, outputCsharpPath, options = {}) {
     try {
         // Default options
         const {
-            namespace = 'SharedLib.Bootstrap',
+            namespace = 'SharedLib.Controls',
             attrName = 'SymbolPath'
         } = csharpOptions;
 
