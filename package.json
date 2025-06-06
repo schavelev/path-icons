@@ -1,6 +1,6 @@
 {
   "name": "path-icons",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A utility for generating C# and CSS with SVG path-based icons",
   "bin": {
     "path-icons": "bin/path-icons.mjs"
