@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using SharedLib.Controls;
@@ -41,7 +41,6 @@ public class BootstrapIcon : Control
 
     #region // Properties
     public static readonly DependencyProperty SymbolProperty;
-        //= DependencyProperty.Register(nameof(Symbol), typeof(BootstrapSymbol), typeof(BootstrapIcon), new PropertyMetadata());
     public BootstrapSymbol Symbol
     {
         get => (BootstrapSymbol)GetValue(SymbolProperty);
@@ -82,7 +81,7 @@ public class BootstrapIcon : Control
     #endregion
 
     // Converts an ARGB uint value into a SolidColorBrush, or null if the value is 0.
-    private static Brush? CreateBrushFromArgb(uint ardb)
+    private static SolidColorBrush? CreateBrushFromArgb(uint ardb)
     {
         if (ardb == 0)
             return null;
@@ -146,20 +145,12 @@ public class BootstrapIcon : Control
     }
 
     // A struct to hold parsed geometry and brush data for a symbol.
-    private readonly struct SymbolParsed
+    private readonly struct SymbolParsed(Geometry? primaryGeo, Brush? primaryBrush, Geometry? secondaryGeo, Brush? secondaryBrush)
     {
-        public Geometry? PrimaryGeometry { get; }
-        public Brush? PrimaryForeground { get; }
-        public Geometry? SecondaryGeometry { get; }
-        public Brush? SecondaryForeground { get; }
-
-        public SymbolParsed(Geometry? primaryGeo, Brush? primaryBrush, Geometry? secondaryGeo, Brush? secondaryBrush)
-        {
-            PrimaryGeometry = primaryGeo;
-            PrimaryForeground = primaryBrush;
-            SecondaryGeometry = secondaryGeo;
-            SecondaryForeground = secondaryBrush;
-        }
+        public Geometry? PrimaryGeometry { get; } = primaryGeo;
+        public Brush? PrimaryForeground { get; } = primaryBrush;
+        public Geometry? SecondaryGeometry { get; } = secondaryGeo;
+        public Brush? SecondaryForeground { get; } = secondaryBrush;
 
         // An empty SymbolParsed instance for error cases.
         public static SymbolParsed Empty => new(null, null, null, null);

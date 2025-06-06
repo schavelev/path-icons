@@ -77,7 +77,7 @@ public class BootstrapIcon : IconElement
     #endregion
 
     // Converts an ARGB uint value into a SolidColorBrush, or null if the value is 0.
-    private static Brush? CreateBrushFromArgb(uint ardb)
+    private static SolidColorBrush? CreateBrushFromArgb(uint ardb)
         => ardb == 0 ? null : new SolidColorBrush(ardb);
 
     // Converts a BootstrapSymbol into parsed geometry and brush data for rendering.
@@ -130,20 +130,12 @@ public class BootstrapIcon : IconElement
     }
 
     // A struct to hold parsed geometry and brush data for a symbol.
-    private readonly struct SymbolParsed
+    private readonly struct SymbolParsed(Geometry? primaryGeo, Brush? primaryBrush, Geometry? secondaryGeo, Brush? secondaryBrush)
     {
-        public Geometry? PrimaryGeometry { get; }
-        public Brush? PrimaryForeground { get; }
-        public Geometry? SecondaryGeometry { get; }
-        public Brush? SecondaryForeground { get; }
-
-        public SymbolParsed(Geometry? primaryGeo, Brush? primaryBrush, Geometry? secondaryGeo, Brush? secondaryBrush)
-        {
-            PrimaryGeometry = primaryGeo;
-            PrimaryForeground = primaryBrush;
-            SecondaryGeometry = secondaryGeo;
-            SecondaryForeground = secondaryBrush;
-        }
+        public Geometry? PrimaryGeometry { get; } = primaryGeo;
+        public Brush? PrimaryForeground { get; } = primaryBrush;
+        public Geometry? SecondaryGeometry { get; } = secondaryGeo;
+        public Brush? SecondaryForeground { get; } = secondaryBrush;
 
         // An empty SymbolParsed instance for error cases.
         public static SymbolParsed Empty => new(null, null, null, null);
